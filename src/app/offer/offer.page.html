@@ -1,0 +1,83 @@
+<!-- HEADER MODAL -->
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>{{ text.coupon_title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="closeModal()">
+        <ion-icon name="close-outline" style="font-size: 24px;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data">
+
+  <!-- HERO BANNER -->
+  <div class="coupon-hero">
+    <div class="hero-icon">
+      <ion-icon name="ticket-outline"></ion-icon>
+    </div>
+    <div class="hero-text">
+      <div class="hero-title">{{ text.coupon_heading || 'Cupones disponibles' }}</div>
+      <div class="hero-sub">Aplica un descuento en tu orden</div>
+    </div>
+  </div>
+
+  <!-- LISTA DE CUPONES -->
+  <ng-container *ngIf="data.length > 0">
+    <div class="section-label">Selecciona un cupón</div>
+
+    <div class="coupon-card" *ngFor="let offer of data">
+
+      <!-- Imagen -->
+      <img *ngIf="offer.img" class="coupon-img" [src]="offer.img" [alt]="offer.code">
+
+      <!-- Separador tipo ticket -->
+      <div class="coupon-tear">
+        <div class="tear-line"></div>
+      </div>
+
+      <!-- Cuerpo del cupón -->
+      <div class="coupon-body">
+
+        <!-- Código -->
+        <div class="coupon-code-row">
+          <div class="code-badge">
+            <ion-icon name="pricetag-outline"></ion-icon>
+            <span>{{ offer.code }}</span>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="coupon-desc">{{ offer.desc }}</div>
+
+        <!-- Mínimo de compra -->
+        <div class="coupon-min" *ngIf="offer.min_cart > 0">
+          <ion-icon name="cart-outline"></ion-icon>
+          Compra mínima de {{ offer.min_cart | currency }}
+        </div>
+
+        <!-- Botón aplicar -->
+        <ion-button
+          class="coupon-apply-btn"
+          expand="block"
+          mode="ios"
+          (click)="applyNow(offer.id)">
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+          {{ text.coupon_button || 'Aplicar cupón' }}
+        </ion-button>
+
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ESTADO VACÍO -->
+  <div class="empty-coupons" *ngIf="data.length == 0">
+    <div class="empty-icon">🎫</div>
+    <div class="empty-title">Sin cupones disponibles</div>
+    <div class="empty-sub">No hay cupones de descuento<br>para esta tienda en este momento.</div>
+  </div>
+
+  <div class="page-bottom-pad"></div>
+
+</ion-content>

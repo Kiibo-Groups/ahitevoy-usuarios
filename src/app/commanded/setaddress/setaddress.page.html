@@ -1,0 +1,36 @@
+<ion-content fullscreen>
+  <div class="map-wrapper">
+    <!-- <div id="map_center">
+      <img src="assets/map-marker.png" width="30px" />
+    </div> -->
+    <div #map id="map"></div>
+  </div>
+</ion-content>
+
+<ion-footer>
+ 
+  <form #form="ngForm" (ngSubmit)="saveAddress()">
+    
+    <div class="footer_content">
+      <div class="form">
+        <ion-list lines="none">
+            <ion-item lines="none">
+                <div class="item_inner d-flex">
+                    <div class="input_box">
+                        <ion-label mode="md" position="stacked">Dirección</ion-label>
+                        <ion-textarea [(ngModel)]="address" name="address" disabled></ion-textarea>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+      </div>
+
+      <section class="ion-text-center">
+        <ion-button class="btn" mode="md" color="dark" type="button" (click)="cancelAdd()">Cancelar</ion-button>
+        <ion-button class="btn" mode="md" type="submit">Guardar dirección</ion-button>
+      </section>
+    </div>
+
+  </form>
+
+</ion-footer>

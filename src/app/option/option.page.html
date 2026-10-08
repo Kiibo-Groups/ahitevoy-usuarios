@@ -1,0 +1,140 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar [class.show-background]="showToolbar" translucent>
+        <ion-buttons slot="start">
+            <ion-back-button mode="md" class="arrow-back"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content mode="ios">
+    <div  mode="ios">
+        <img src="{{item.img}}" alt="Portada" style="width: 100%;" *ngIf="item.img">
+        <ion-card-header>
+            <ion-card-title style="font-size: 18px; font-weight: 400;">
+                {{item.name}}
+            </ion-card-title>
+            <ion-card-subtitle style="color: rgb(53, 53, 53);">
+                {{item.description}}
+            </ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-item>
+            <ion-label><span style="font-size: 16px;font-weight: 500;color:green;">Total: {{cart_total | currency}}</span></ion-label>
+        </ion-item>
+    </div>
+
+    <ion-list>
+        <ion-list-header *ngIf="item.s_price > 0">
+            {{ text.item_size_heading }}
+        </ion-list-header>
+        <ion-radio-group>
+            <ion-item *ngIf="item.s_price > 0">
+                <ion-radio slot="start" color="primary" value="s" (ionSelect)="selectItem(1,item.s_price)" checked="true"></ion-radio>
+                <ion-label>
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span style="font-size: 16px;">{{ text.item_small }}</span>
+                        <span style="font-weight: 500; color: var(--ion-color-primary);">{{ currency }}{{ item.s_price }}</span>
+                    </div>
+                </ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="item.m_price > 0">
+                <ion-radio slot="start" color="primary" value="m" (ionSelect)="selectItem(2,item.m_price)"></ion-radio>
+                <ion-label>
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span style="font-size: 16px;">{{ text.item_m }}</span>
+                        <span style="font-weight: 500; color: var(--ion-color-primary);">{{ currency }}{{ item.m_price }}</span>
+                    </div>
+                </ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="item.l_price > 0">
+                <ion-radio slot="start" color="primary" value="l" (ionSelect)="selectItem(3,item.l_price)"></ion-radio>
+                <ion-label>
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span style="font-size: 16px;">{{ text.item_large }}</span>
+                        <span style="font-weight: 500; color: var(--ion-color-primary);">{{ currency }}{{ item.l_price }}</span>
+                    </div>
+                </ion-label>
+            </ion-item>
+        </ion-radio-group>
+    </ion-list>
+
+    <ion-list *ngIf="item.addon.length > 0">
+        
+        <!-- hideToggle -->
+        <mat-expansion-panel  [expanded]="true"  *ngFor="let category of item.addon" class="{{ category.cate_name }}">
+           
+            <mat-expansion-panel-header style="background-color: #f1f1f1;">
+              <mat-panel-title style="display: block;">
+                    <span style="font-weight: 500;">{{ category.cate_name }}</span><br />
+                    <small *ngIf="category.max_options > 0">(Elige hasta {{category.max_options}})</small>
+                    &nbsp;<small *ngIf="category.required > 0">(Obligatorio)</small>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let addon of  category.items">          
+                    <ion-item *ngIf="category.single_opcion == 0" class="content-input">
+                        <mat-radio-group
+                            color="primary"
+                            aria-labelledby="example-radio-group-label"
+                            class="cate_{{category.cate_id}}"
+                            [(ngModel)]="category.cate_id"
+                            style="width: 100%; display: flex; flex-direction: column;">
+                            <mat-radio-button class="example-radio-button" value="addon.id" [value]="addon.id" (click)="addonSelect(addon,category.max_options,category.cate_id,category.required,'radio',$event)" style="margin: 8px 0; width: 100%;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                    <span>{{addon.name}}</span>
+                                    <span *ngIf="addon.price > 0" style="color: var(--ion-color-medium); font-weight: 500;">+{{addon.price | currency}}</span>
+                                </div>
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </ion-item>
+                <!-- Checkboxes normales (allow_qty == 0) -->
+                <ion-item *ngIf="category.single_opcion == 1 && category.allow_qty != 1">
+                    <ion-checkbox color="primary" slot="start" class="cate_{{category.cate_id}}" (ionChange)="addonSelect(addon,category.max_options,category.cate_id,category.required,'check',$event)"></ion-checkbox>
+                    <ion-label>
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <span style="font-size: 15px; white-space: normal;">{{ addon.name }}</span>
+                            <span *ngIf="addon.price > 0" style="color: var(--ion-color-medium); font-weight: 500; flex-shrink: 0; margin-left: 10px;">+{{ currency }}{{ addon.price }}</span>
+                        </div>
+                    </ion-label>
+                </ion-item>
+
+                <!-- Botones de Cantidad para Combos (allow_qty == 1) -->
+                <ion-item *ngIf="category.single_opcion == 1 && category.allow_qty == 1">
+                    <ion-label style="white-space: normal;">
+                        <h3 style="font-size: 15px; font-weight: 500; margin-bottom: 2px;">{{ addon.name }}</h3>
+                        <p *ngIf="addon.price > 0" style="color: var(--ion-color-primary); font-weight: 600; font-size: 14px; margin: 0;">+{{ currency }}{{ addon.price }}</p>
+                    </ion-label>
+                    
+                    <!-- Controles de cantidad en lugar de checkbox -->
+                    <div slot="end" class="quantitybtn" style="text-align: center; display: flex; align-items: center; background: var(--ion-color-light); border-radius: 20px; padding: 2px 8px;">
+                        <ion-button fill="clear" color="medium" style="width: 30px; height: 30px; --border-radius: 50%; font-size: 20px; --padding-start: 0; --padding-end: 0; margin: 0;" (click)="addonQtySelect(addon, category, 'rest'); $event.stopPropagation();">
+                            <ion-icon name="remove"></ion-icon>
+                        </ion-button>
+                        <input class="quantityinput" type="text" style="width: 30px; text-align: center; border: none; background: transparent; font-size: 16px; font-weight: bold; margin: 0 5px;" [value]="addonQtyData[addon.id] || 0" readonly="readonly">
+                        <ion-button fill="clear" color="primary" style="width: 30px; height: 30px; --border-radius: 50%; font-size: 20px; --padding-start: 0; --padding-end: 0; margin: 0;" (click)="addonQtySelect(addon, category, 'sum'); $event.stopPropagation();">
+                            <ion-icon name="add"></ion-icon>
+                        </ion-button>
+                    </div>
+                </ion-item>
+            </div>
+        </mat-expansion-panel>
+        
+    </ion-list>
+    <div class="quantitybtn" style="text-align: center;padding: 12px 0;">
+        <div class="quantitybtn" *ngIf="hasCart(item.id)" style="text-align: center;padding: 12px 0;">
+            <button type="button" class="sign plus" data-quantity="plus" data-field="quantity" *ngIf="qty >= 2" (click)="Qty('rest')"> - </button>
+            <input class="quantityinput" type="text" name="qty" value="{{ qty }}" readonly="readonly">
+            <button type="button" class="sign minus" data-quantity="minus" data-field="quantity" (click)="Qty('sum')">+</button>
+        </div>
+    </div>
+    <div class="footer-line"></div>
+</ion-content>
+ 
+<ion-footer style="border:1px solid #e6e6e6;background-color: #ffffff;">
+    <ion-button mode="ios" class="animate__animated animate__bounceInUp"  (click)="addToCart()" [disabled]="!formVal()">
+        <ion-text>x{{ qty }}</ion-text>
+        {{ text.item_addon_button }}
+        <span>MX{{itemPrice | currency}}</span>
+      </ion-button>
+</ion-footer>

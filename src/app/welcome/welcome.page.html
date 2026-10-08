@@ -1,0 +1,38 @@
+<ion-content>   
+    <img src="assets/back_opacity.png" class="back_opacity">
+
+
+    <div class="wrap-content">
+        <div class="banner animate__animated animate__fadeInUp">
+            <div class="logo ion-text-center">
+                <img src="assets/top_pic3.png" >
+            </div>
+        </div>
+
+        <section class="wrap_btns_log">
+            <div class="ion-text-center">
+                <h6>Ingresa a tu cuenta</h6>
+                <hr />
+            </div>
+    
+            <div class="social_btns animate__animated animate__zoomInUp">
+                <ion-button class="phone" (click)="LoginSignup()">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <span>Ingresar con tú cuenta</span>
+                </ion-button>
+    
+                <ion-button class="new" (click)="Signup()">
+                    <ion-icon name="person"></ion-icon>
+                    <span>Nueva cuenta</span>
+                </ion-button>
+
+                <!-- Invitado -->
+                <ion-button class="phone" color="dark" (click)="guestUser()">
+                    <ion-icon name="walk"></ion-icon>
+                    <span>Ingresar como invitado</span>
+                </ion-button>
+            </div>
+        </section>
+    </div>
+</ion-content>
+  

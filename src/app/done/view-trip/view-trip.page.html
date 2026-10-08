@@ -1,0 +1,38 @@
+<ion-header class="bg_transparent">
+	<ion-toolbar>
+		<ion-buttons slot="start" class="ion-text-center">
+			<ion-icon name="arrow-back" (click)="backPage()"></ion-icon>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <div class="map-wrapper">
+    <div #map id="map"></div>
+  </div>
+
+  <!-- Informacion del Staff -->
+  <div class="status_wrap" *ngIf="dboy">
+    <ion-card mode="ios" style="background:#fff;width: 100% !important;box-shadow: none;z-index:1000 !important;">
+        <ion-item style="box-shadow: none !important;" lines="none">
+            <ion-avatar slot="start">
+                <img src="assets/init.png" alt="">
+            </ion-avatar>
+            <ion-label>
+              <h3>Entrega a cargo de:</h3>
+              <span>{{ dboy.name }}</span>
+            </ion-label>
+            
+            <ion-buttons slot="end">
+              <a href="https://api.whatsapp.com/send?phone=+52{{ dboy.phone }}" target="_blank" style="color:#0cb43e;">
+                <ion-icon name="logo-whatsapp" style="font-size: 28px;margin-left: 12px;"></ion-icon>
+              </a>
+              <a href="tel:+52{{ dboy.phone }}" target="_blank">
+                <ion-icon name="call"></ion-icon>
+              </a>
+            </ion-buttons>
+        </ion-item>
+    </ion-card>
+  </div>
+  <!-- Informacion del Staff -->
+</ion-content>

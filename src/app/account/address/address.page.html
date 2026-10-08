@@ -1,0 +1,100 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mi Dirección</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadMap()" fill="outline" color="light" style="--border-radius: 20px; font-size: 12px; font-weight: 600;">
+        <ion-icon slot="start" name="locate-outline"></ion-icon>
+        Mi ubicación
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="map-wrapper">
+    <div id="map_center">
+      <img src="assets/map-marker.png" width="30px" />
+    </div>
+    <div #map id="map"></div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <form #form="ngForm" (ngSubmit)="saveAddress(form.value)">
+
+    <div class="footer_content">
+
+      <!-- Dirección detectada -->
+      <div class="address-box">
+        <div class="address-label">
+          <ion-icon name="location-outline"></ion-icon>
+          Dirección detectada
+        </div>
+        <div class="address-text">{{ address || 'Mueve el mapa para detectar tu dirección...' }}</div>
+        <ion-textarea
+          [(ngModel)]="address"
+          name="address"
+          disabled
+          style="display: none;">
+        </ion-textarea>
+      </div>
+
+      <!-- Selector de tipo -->
+      <div class="type-section">
+        <div class="type-label">Guardar como</div>
+
+        <ion-radio-group [(ngModel)]="type_add" name="type_add">
+          <div class="type-options">
+
+            <div class="type-option" [class.selected]="type_add === 'Hogar'">
+              <ion-radio value="Hogar" class="hidden-radio"></ion-radio>
+              <div class="type-content" (click)="type_add = 'Hogar'">
+                <div class="type-icon-wrap">
+                  <ion-icon name="home-outline"></ion-icon>
+                </div>
+                <span>Hogar</span>
+              </div>
+            </div>
+
+            <div class="type-option" [class.selected]="type_add === 'Oficina'">
+              <ion-radio value="Oficina" class="hidden-radio"></ion-radio>
+              <div class="type-content" (click)="type_add = 'Oficina'">
+                <div class="type-icon-wrap">
+                  <ion-icon name="briefcase-outline"></ion-icon>
+                </div>
+                <span>Oficina</span>
+              </div>
+            </div>
+
+            <div class="type-option" [class.selected]="type_add === 'Otro'">
+              <ion-radio value="Otro" class="hidden-radio"></ion-radio>
+              <div class="type-content" (click)="type_add = 'Otro'">
+                <div class="type-icon-wrap">
+                  <ion-icon name="bookmark-outline"></ion-icon>
+                </div>
+                <span>Otro</span>
+              </div>
+            </div>
+
+          </div>
+        </ion-radio-group>
+      </div>
+
+    </div>
+
+    <!-- Botón guardar -->
+    <ion-button
+      expand="full"
+      class="btn-save-address"
+      mode="ios"
+      type="submit"
+      [disabled]="!type_add || !address">
+      <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+      Guardar dirección
+    </ion-button>
+
+  </form>
+</ion-footer>

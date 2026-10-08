@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar color="white">
+  <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>¿Olvidaste tu contraseña?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+<!--Send email for otp-->
+<form *ngIf="!user_id && !newPassword" #form="ngForm" (ngSubmit)="forgot(form.value)">
+
+  <p style="color: rgb(82, 82, 82);font-weight: 400;text-align: center;">
+    ingrese su correo electrónico y le enviaremos instrucciones sobre cómo restablecerlo
+  </p>
+  <br />
+  <ion-row>
+    <ion-col size="3" style="margin-top: 10.5px !important;">
+     <span>Email</span>
+    </ion-col>
+    <ion-col size="9">
+      <ion-input type="email" ngModel clearInput required name="email" placeholder="Ingresa tu Email"></ion-input>
+    </ion-col>
+  </ion-row>
+
+<br>
+
+<ion-button expand="block" mode="ios" type="submit">Enviar</ion-button>
+<br>
+</form>
+
+<!--Verify OTP code-->
+<div *ngIf="user_id && !newPassword">
+
+  <ion-card-header>
+  <ion-card-title>Verifique su correo electrónico</ion-card-title>
+  <ion-card-subtitle>Se ha enviado un codigo a su correo electrónico {{ this.email }}</ion-card-subtitle>
+
+  </ion-card-header>
+  <br><br>
+  <form #form="ngForm" (ngSubmit)="verify(form.value)">
+
+  <ion-item>
+    <ion-label position="floating" style="font-size: 12px">Ingresa el codigo</ion-label>
+    <ion-input type="email" ngModel required name="otp"></ion-input>
+  </ion-item>
+
+  <br>
+
+  <ion-button expand="block" mode="ios" type="submit">Verificar</ion-button>
+
+  </form>
+  <p align="center">No obtuviste el codigo? <a (click)="resend()">Reenviar</a></p>
+
+</div>
+
+<!--Set New Password-->
+<div *ngIf="user_id && newPassword">
+
+<ion-card-header>
+<ion-card-title>Establecer nueva contraseña</ion-card-title>
+
+</ion-card-header>
+<br><br>
+<form #form="ngForm" (ngSubmit)="new_password(form.value)">
+
+<ion-item>
+  <ion-label position="floating" style="font-size: 12px">Nueva contraseña
+  </ion-label>
+  <ion-input type="password" ngModel required name="password"></ion-input>
+</ion-item>
+
+<ion-item>
+  <ion-label position="floating" style="font-size: 12px">Confirmar contraseña</ion-label>
+  <ion-input type="password" ngModel required name="new_password"></ion-input>
+</ion-item>
+
+<br>
+
+<ion-button expand="block" mode="ios" type="submit">Actualizar</ion-button>
+
+</form>
+<p align="center">No obtuviste el codigo? <a (click)="resend()">Reenviar</a></p>
+
+</div>
+
+</ion-content>

@@ -1,0 +1,116 @@
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen mode="ios">
+
+  <!-- Decoración de fondo sutil -->
+  <div class="bg-decoration"></div>
+
+  <div class="wrap-content">
+    
+    <form #form="ngForm" (ngSubmit)="signup(form.value)">
+      
+      <!-- BANNER Y LOGO -->
+      <div class="banner animate__animated animate__fadeInDown">
+        <div class="logo">
+          <img src="assets/top_pic.png" alt="AhiTeVoy Logo">
+        </div>
+      </div>
+
+      <!-- FORMULARIO -->
+      <div class="form">
+        <div class="title-text animate__animated animate__fadeInUp">Crear una cuenta</div>
+        <div class="subtitle-text animate__animated animate__fadeInUp">Ingresa tus datos para registrarte y comenzar a pedir.</div>
+
+        <ion-list lines="none">
+          
+          <!-- Input Nombre -->
+          <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+              <h3><ion-icon name="person-outline"></ion-icon></h3>
+              <ion-input 
+                mode="md" 
+                type="text" 
+                clearInput 
+                name="name" 
+                ngModel 
+                placeholder="Nombre Completo"
+                required>
+              </ion-input>
+            </div>
+          </ion-item>
+
+          <!-- Input Email -->
+          <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+              <h3><ion-icon name="mail-outline"></ion-icon></h3>
+              <ion-input 
+                mode="md" 
+                type="email" 
+                clearInput 
+                name="email" 
+                ngModel 
+                placeholder="Correo Electrónico"
+                required>
+              </ion-input>
+            </div>
+          </ion-item>
+          
+          <!-- Input Telefono -->
+          <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+              <h3><ion-icon name="call-outline"></ion-icon></h3>
+              <ion-input 
+                mode="md" 
+                type="tel" 
+                clearInput 
+                name="phone" 
+                ngModel 
+                placeholder="Teléfono (Ej: 833 125 8596)"
+                required>
+              </ion-input>
+            </div>
+          </ion-item>
+
+          <!-- Input Password -->
+          <ion-item class="animate__animated animate__fadeInUp">
+            <div class="item_inner">
+              <h3><ion-icon name="lock-closed-outline"></ion-icon></h3>
+              <ion-input 
+                mode="md" 
+                type="password" 
+                clearInput 
+                name="password" 
+                ngModel 
+                placeholder="Contraseña"
+                required>
+              </ion-input>
+            </div>
+          </ion-item>
+
+        </ion-list>
+      </div>
+
+      <!-- BOTÓN REGISTRAR -->
+      <div class="actions-section animate__animated animate__fadeInUp">
+        <ion-button class="btn_next" [disabled]="!form.valid" type="submit" mode="ios">
+          Registrarse
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+    </form>
+  </div>
+</ion-content>
+
+<!-- FOOTER (Login) -->
+<ion-footer class="ion-no-border">
+  <div class="register-text" routerLink="/login" routerDirection="back">
+    ¿Ya tienes una cuenta? <b>Ingresa</b>
+  </div>
+</ion-footer>

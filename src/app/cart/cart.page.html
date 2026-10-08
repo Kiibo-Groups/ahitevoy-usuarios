@@ -1,0 +1,215 @@
+<!-- HEADER -->
+<ion-header class="ion-no-border" *ngIf="!chargeInProcess">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="data && data.total > 0">Verifica tu orden</ion-title>
+    <ion-buttons slot="end" *ngIf="data && data.total > 0">
+      <span class="toolbar-total">{{ data.total | currency }}</span>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="ios">
+
+  <!-- ============================= -->
+  <!--     CARRITO CON ITEMS         -->
+  <!-- ============================= -->
+  <div class="wrap-content" *ngIf="!chargeInProcess">
+
+    <!-- Carrito vacío -->
+    <div class="empty-cart-state" *ngIf="data && data.total == 0">
+      <img src="assets/empty-cart.gif" alt="Carrito vacío">
+      <div class="empty-title">¡Tu carrito está vacío!</div>
+      <div class="empty-subtitle">Agrega productos de tus negocios favoritos.</div>
+    </div>
+
+    <!-- Alerta: Comercio cerrado -->
+    <div class="alert-banner danger animate__animated animate__fadeInRight" *ngIf="data && data.total > 0 && !store_status">
+      <ion-icon name="storefront-outline"></ion-icon>
+      <span>El comercio se encuentra cerrado en este momento.</span>
+    </div>
+
+    <!-- Alerta: Pedido activo -->
+    <div class="alert-banner warning animate__animated animate__fadeInRight" *ngIf="data && data.total > 0 && order_status">
+      <ion-icon name="time-outline"></ion-icon>
+      <span>Tienes un pedido activo en camino.</span>
+    </div>
+
+    <!-- Dirección de entrega -->
+    <div class="address-card animate__animated animate__fadeInRight" *ngIf="data && data.total > 0"
+         routerLink="/setaddress" routerDirection="forward">
+      <div class="address-inner">
+        <div class="addr-icon">
+          <ion-icon name="location-outline"></ion-icon>
+        </div>
+        <div class="addr-text">
+          <div class="addr-label">Dirección de entrega</div>
+          <div class="addr-value">{{ address | slice:0:30 }}<i *ngIf="address?.length > 30">...</i></div>
+        </div>
+        <span class="addr-change">Cambiar</span>
+      </div>
+    </div>
+
+    <!-- Método de pago -->
+    <div class="pay-card animate__animated animate__fadeInRight" *ngIf="data && data.total > 0"
+         routerLink="/option-pay" routerDirection="forward">
+      <div class="pay-inner">
+        <div class="pay-icon">
+          <ion-icon [name]="otype == 3 ? 'card-outline' : 'cash-outline'"></ion-icon>
+        </div>
+        <div class="pay-text">
+          <div class="pay-label">Método de pago</div>
+          <div class="pay-method" *ngIf="otype == 1">Efectivo</div>
+          <div *ngIf="otype == 3">
+            <div class="pay-method">Tarjeta Crédito / Débito</div>
+            <div class="pay-sub">Procesado de forma segura vía Stripe</div>
+          </div>
+          <div class="pay-method" *ngIf="!otype">Seleccionar método</div>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Productos -->
+    <div class="items-card animate__animated animate__fadeInRight" *ngIf="data && data.total > 0">
+
+      <div class="items-card-header">
+        <span class="store-name">{{ data.store }}</span>
+        <span class="delete-all" (click)="deleteAll()">
+          <ion-icon name="trash-outline"></ion-icon>
+          Eliminar todo
+        </span>
+      </div>
+
+      <div class="item-row" *ngFor="let item of data.data">
+        <div class="item-img" [style.backgroundImage]="'url('+ item.img +')'"></div>
+        <div class="item-details">
+          <div class="item-name">{{ item.item }}</div>
+          <div class="item-addons" *ngIf="item.addon?.length > 0">
+            <span *ngFor="let addon of item.addon">+ {{ addon.name }} ({{ data.currency }}{{ addon.price }})<br></span>
+          </div>
+          <div class="item-controls">
+            <ion-icon name="remove-circle-outline" color="tertiary" (click)="updateCart(item.id, 0)"></ion-icon>
+            <span class="item-qty-badge">{{ item.qty }}</span>
+            <ion-icon name="add-circle-outline" color="dark" (click)="updateCart(item.id, 1)"></ion-icon>
+          </div>
+        </div>
+        <span class="item-price">{{ item.price * item.qty | currency }}</span>
+      </div>
+
+    </div>
+
+    <!-- Resumen de costos -->
+    <div class="summary-card animate__animated animate__fadeInRight" *ngIf="data && data.total > 0">
+
+      <div class="summary-row">
+        <span class="sum-label">Subtotal</span>
+        <span class="sum-value">{{ data.subTotal | currency }}</span>
+      </div>
+
+      <div class="summary-row" *ngIf="data.d_charges?.costs_ship > 0">
+        <span class="sum-label">
+          <ion-icon name="bicycle-outline"></ion-icon>
+          {{ text.cart_delivery }}
+        </span>
+        <span class="sum-value">{{ data.d_charges.costs_ship | currency }}</span>
+      </div>
+
+      <div class="summary-row" *ngIf="data.service_fee != 0" (click)="infoPage()">
+        <span class="sum-label">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          Comisión por servicio
+        </span>
+        <span class="sum-value">{{ data.service_fee | currency }}</span>
+      </div>
+
+      <div class="summary-row" *ngIf="data.discount > 0">
+        <span class="sum-label">
+          <ion-icon name="pricetag-outline"></ion-icon>
+          {{ text.cart_discount }}
+        </span>
+        <span class="sum-value" style="color: var(--ion-color-secondary);">-{{ data.discount | currency }}</span>
+      </div>
+
+      <div class="summary-row" *ngIf="data.discount == 0">
+        <span class="sum-label">
+          <ion-icon name="ticket-outline"></ion-icon>
+          {{ text.cart_coupon }}
+        </span>
+        <a class="sum-link" (click)="coupen()">{{ text.cart_apply }}</a>
+      </div>
+
+      <div class="summary-row" *ngIf="data.d_charges?.duration != 0">
+        <span class="sum-label">
+          <ion-icon name="timer-outline"></ion-icon>
+          Tiempo estimado
+        </span>
+        <span class="sum-value">{{ data.d_charges.duration }}</span>
+      </div>
+
+      <div class="summary-row total-row">
+        <span class="sum-label">Total a pagar</span>
+        <span class="sum-value">{{ data.total | currency }}</span>
+      </div>
+
+    </div>
+
+    <!-- Notas / comentario -->
+    <div class="notes-card animate__animated animate__fadeInRight" *ngIf="data && data.total > 0">
+      <div class="notes-label">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        Comentario para el negocio
+      </div>
+      <ion-textarea
+        [placeholder]="text.place_address_text"
+        [(ngModel)]="notes"
+        name="notes">
+      </ion-textarea>
+    </div>
+
+    <div class="page-bottom-pad"></div>
+  </div>
+
+  <!-- ============================= -->
+  <!--   PROCESANDO PAGO (STRIPE)    -->
+  <!-- ============================= -->
+  <div class="processing-screen" *ngIf="chargeInProcess">
+    <img src="assets/stripe.svg" alt="Stripe">
+    <p>Tus pagos se realizan de forma segura con encriptación de 256 bits.</p>
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+</ion-content>
+
+<!-- FOOTER: Carrito vacío -->
+<ion-footer *ngIf="data && data.total == 0" class="ion-no-border">
+  <div class="footer-btn-wrap">
+    <ion-button expand="block" class="btn-secondary" routerLink="/home" routerDirection="root">
+      <ion-icon name="search-outline" slot="start"></ion-icon>
+      Seguir buscando
+    </ion-button>
+  </div>
+</ion-footer>
+
+<!-- FOOTER: Hacer pedido -->
+<ion-footer *ngIf="text && data && data.total > 0 && !chargeInProcess && store_status && !order_status" class="ion-no-border">
+  <div class="footer-btn-wrap">
+    <ion-button expand="block" [disabled]="!address" (click)="makeOrder()">
+      <span class="btn-count">{{ count }}</span>
+      Hacer pedido
+      <span class="btn-price">{{ data.total | currency }}</span>
+    </ion-button>
+  </div>
+</ion-footer>
+
+<!-- FOOTER: Ver seguimiento -->
+<ion-footer *ngIf="text && data && order_status" class="ion-no-border">
+  <div class="footer-btn-wrap">
+    <ion-button expand="block" routerLink="/done" routerDirection="root">
+      <ion-icon name="navigate-outline" slot="start"></ion-icon>
+      Ver seguimiento del pedido
+    </ion-button>
+  </div>
+</ion-footer>

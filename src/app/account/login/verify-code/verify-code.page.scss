@@ -1,0 +1,31 @@
+.btn_next {
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    background-color: #000000;
+    margin: 15px;
+    --border-radius:25px !important;
+    border-radius: 25px !important;
+
+}
+
+.welcome_text {
+    font-weight: 600;
+    font-style: normal;
+    letter-spacing: 0.8px;
+    z-index: 100;
+}
+
+.digit-group {
+    width: 90%;
+    margin: auto;
+
+	ion-input{
+        display:inline-block;
+        width:50px;
+        height:25px;
+        margin:3px;
+        text-align: center;
+        letter-spacing: 6px;
+    }
+}

@@ -1,0 +1,66 @@
+<ion-content mode="ios">
+
+  <div class="rating-card">
+
+    <!-- Encabezado de éxito -->
+    <div class="success-icon-wrap">
+      <img src="assets/ic_success.png" alt="Éxito">
+    </div>
+    
+    <div class="rating-title">¡Pedido Entregado!</div>
+    <div class="rating-subtitle">{{ text.rating_heading || '¿Cómo calificarías tu experiencia?' }}</div>
+
+    <form #form="ngForm" (ngSubmit)="giveRating(form.value)">
+
+      <!-- Selector de estrellas (simplificado y elegante) -->
+      <div class="stars-container">
+        <!-- Generamos las 5 estrellas y asignamos clase 'active' si el índice <= estrella actual -->
+        <div class="star-box" [class.active]="star >= 1" (click)="setStar(1)">
+          <ion-icon [name]="star >= 1 ? 'star' : 'star-outline'"></ion-icon>
+        </div>
+        <div class="star-box" [class.active]="star >= 2" (click)="setStar(2)">
+          <ion-icon [name]="star >= 2 ? 'star' : 'star-outline'"></ion-icon>
+        </div>
+        <div class="star-box" [class.active]="star >= 3" (click)="setStar(3)">
+          <ion-icon [name]="star >= 3 ? 'star' : 'star-outline'"></ion-icon>
+        </div>
+        <div class="star-box" [class.active]="star >= 4" (click)="setStar(4)">
+          <ion-icon [name]="star >= 4 ? 'star' : 'star-outline'"></ion-icon>
+        </div>
+        <div class="star-box" [class.active]="star >= 5" (click)="setStar(5)">
+          <ion-icon [name]="star >= 5 ? 'star' : 'star-outline'"></ion-icon>
+        </div>
+      </div>
+
+      <!-- Cuadro de comentario -->
+      <div class="comment-box">
+        <ion-textarea 
+          ngModel 
+          name="comment" 
+          [placeholder]="text.rating_msg || 'Déjanos un comentario (opcional)...'">
+        </ion-textarea>
+      </div>
+
+      <!-- CAMPOS OCULTOS REQUERIDOS (Se envían por defecto) -->
+      <div style="display: none;">
+        <ion-toggle ngModel name="covid_prevention" mode="ios"></ion-toggle>
+        <ion-toggle ngModel name="covid_prevention_product" mode="ios"></ion-toggle>
+      </div>
+
+      <!-- Botón de envío -->
+      <ion-button 
+        class="btn-submit-rating" 
+        expand="block" 
+        [disabled]="form.invalid || star === 0" 
+        type="submit" 
+        mode="ios">
+        <ion-icon name="send-outline" slot="start"></ion-icon>
+        {{ text.rating_button || 'Enviar calificación' }}
+      </ion-button>
+
+    </form>
+  </div>
+
+  <div class="page-bottom-pad"></div>
+
+</ion-content>

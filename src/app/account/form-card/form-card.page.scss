@@ -1,0 +1,139 @@
+* {
+    box-sizing : border-box;
+}
+  
+body,
+html {
+    height     : 100%;
+    min-height : 100%;
+}
+
+body {
+    margin           : 0;
+    background-color : #e7e7e7;
+    font-family      : 'Roboto',sans-serif;
+}
+   
+  /* Credit Card */
+  
+  .credit-card {
+    margin           : auto 0;
+    border-radius    : 6px;
+    background-color : #fff;
+    box-shadow       : 1px 2px 3px 0px rgba(0,0,0,0.10);
+  }
+  
+  .form-header {
+    padding       : 20px 30px 0;
+  }
+  
+  .form-body {
+    margin: 10px auto 0;
+    padding : 30px 30px 20px;
+  }
+  
+  /* Title */
+  
+  .title {
+    margin    : 0 15px;
+    color     : #5e6977;
+    font-size : 18px;
+  }
+  
+  /* Common */
+  
+  .card-number,
+  .cvv-input ion-input,
+  .month ion-select,
+  .paypal-btn,
+  .proceed-btn,
+  .year ion-select {
+    height : 42px;
+  }
+  
+  .card-number,
+  .month ion-select,
+  .year ion-select {
+    font-size   : 14px;
+    font-weight : 100;
+    line-height : 14px;
+  }
+  
+  .card-number,
+  .cvv-details,
+  .cvv-input ion-input,
+  .month ion-select,
+  .year ion-select {
+    color   : #2f2f2f;
+    opacity : .7;
+  }
+  
+/* Card Number */
+
+.card-number {
+    width         : 100%;
+    margin-bottom : 20px;
+    padding-left  : 20px;
+    border        : 2px solid #828383;
+    border-radius : 6px;
+}
+  
+/* Date Field */
+
+.month ion-select,
+.year ion-select {
+  -moz-appearance     : none;
+  -webkit-appearance  : none;
+  margin-bottom       : 20px;
+  padding-left        : 20px;
+  width               : 92%;
+  border              : 2px solid #828383;
+  border-radius       : 6px;
+}
+ 
+.date-field {  
+  position: relative;
+  
+  ion-row {
+    padding: 0 !important;
+
+    ion-col {
+      padding: 0 !important;
+
+    }
+  }
+}
+
+/* Card Verification Field */
+
+.card-verification {
+
+  .cvv-input ion-input {
+      width         : 145px;
+      padding-left  : 20px;
+      border        : 2px solid #828383;
+      border-radius : 6px;
+      background    : #fff;
+  }
+}
+/* Buttons Section */
+
+ion-button {
+    display: block;
+    margin-top: 25px;
+    text-transform: capitalize;
+    font-size: 14px;
+    height: 35px;
+}
+
+.cards_img {
+
+  ion-list {
+    column-count: 4;
+    
+    img {
+      margin: 10 12px;
+      max-width: 70px;
+    }
+  }
+}

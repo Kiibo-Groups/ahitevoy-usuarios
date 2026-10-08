@@ -1,0 +1,119 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-icon name="chevron-back-outline" (click)="closeForm()"></ion-icon>
+        <h4 class="title">Ingresa los datos de tu tarjeta</h4>
+        </ion-buttons>
+      <ion-title>
+      </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form class="credit-card" #form="ngForm" (ngSubmit)="payWithStripe(form.value)">
+    <div class="form-body">
+      <!-- Card Number -->
+      <ion-input type="tel" class="card-number" maxlength="16" name="card_number" ngModel required placeholder="Número de tarjeta" clearInput></ion-input>
+      <ion-input type="text" class="card-number" name="holder_name" ngModel required placeholder="Nombre en la tarjeta" clearInput></ion-input>
+      <!-- Date Field -->
+      <div class="date-field">
+        <ion-row>
+          <ion-col size="6">
+            <div class="month">
+              <ion-select mode="md" interface="action-sheet" placeholder="mes de vencimiento" name="expiration_month" ngModel required>
+                <ion-select-option value="01">01</ion-select-option>
+                <ion-select-option value="02">02</ion-select-option>
+                <ion-select-option value="03">03</ion-select-option>
+                <ion-select-option value="04">04</ion-select-option>
+                <ion-select-option value="05">05</ion-select-option>
+                <ion-select-option value="06">06</ion-select-option>
+                <ion-select-option value="07">07</ion-select-option>
+                <ion-select-option value="08">08</ion-select-option>
+                <ion-select-option value="09">09</ion-select-option>
+                <ion-select-option value="10">10</ion-select-option>
+                <ion-select-option value="11">11</ion-select-option>
+                <ion-select-option value="12">12</ion-select-option>
+              </ion-select>
+            </div>
+          </ion-col>
+
+          <ion-col size="6">
+            <div class="year">
+              <ion-select mode="md" interface="action-sheet" placeholder="año de vencimiento" name="expiration_year" ngModel required>
+                <ion-select-option value="16">16</ion-select-option>
+                <ion-select-option value="17">17</ion-select-option>
+                <ion-select-option value="18">18</ion-select-option>
+                <ion-select-option value="19">19</ion-select-option>
+                <ion-select-option value="20">20</ion-select-option>
+                <ion-select-option value="21">21</ion-select-option>
+                <ion-select-option value="22">22</ion-select-option>
+                <ion-select-option value="23">23</ion-select-option>
+                <ion-select-option value="24">24</ion-select-option>
+                <ion-select-option value="25">25</ion-select-option>
+                <ion-select-option value="26">26</ion-select-option>
+                <ion-select-option value="27">27</ion-select-option>
+                <ion-select-option value="28">28</ion-select-option>
+                <ion-select-option value="29">29</ion-select-option>
+                <ion-select-option value="30">30</ion-select-option>
+              </ion-select>
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!-- Card Verification Field -->
+      <div class="card-verification">
+        <div class="cvv-input">
+          <ion-input type="tel" name="cvv2" maxlength="4" ngModel placeholder="CVV" required></ion-input>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <ion-button [disabled]="!form.valid" type="submit" color="primary" >
+        Realizar pago
+      </ion-button>
+    </div>
+  </form>
+
+
+  <ion-card style="box-shadow: none;">
+    <ion-row>
+      <ion-col size="6">
+        <p style="font-size: 12px;">Transacciones realizadas vía:</p>
+        <img src="assets/stripe.svg" alt="Stripe" style="max-width: 40%">
+      </ion-col>
+      <ion-col size="6">
+        <div class="shield" style="padding: 12px 0;font-size:12px;">
+          Tus pagos se realizan de forma segura con encriptación de 256 bits
+        </div>
+      </ion-col>
+
+      <!--
+      <ion-col size="12" class="cards_img">
+        <ion-list-header>
+          <span>Marcas aceptadas</span>
+        </ion-list-header>
+       
+        <ion-list>
+          <img src="assets/cards/americanExpress.png" alt="americanExpress">
+          <img src="assets/cards/bancoAzteca.png" alt="bancoAzteca">
+          <img src="assets/cards/banorte.png" alt="banorte">
+          <img src="assets/cards/banregio.png" alt="banregio">
+          <img src="assets/cards/bbva.png" alt="bbva">
+          <img src="assets/cards/carnet.png" alt="carnet">
+          <img src="assets/cards/citibanamex.png" alt="citibanamex">
+          <img src="assets/cards/hsbc.png" alt="hsbc">
+          <img src="assets/cards/inbursa.png" alt="inbursa">
+          <img src="assets/cards/invex.png" alt="invex">
+          <img src="assets/cards/ixe.png" alt="ixe">
+          <img src="assets/cards/santander.png" alt="santander">
+          <img src="assets/cards/scotiabank.png" alt="scotiabank">
+          <img src="assets/cards/visa.png" alt="visa">
+        </ion-list>
+      </ion-col>
+      -->
+    </ion-row>
+  </ion-card>
+
+</ion-content>

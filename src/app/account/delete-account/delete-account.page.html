@@ -1,0 +1,123 @@
+<!-- Modal sin ion-header (es un modal bottom-sheet) -->
+<ion-content *ngIf="data">
+
+  <!-- ================================ -->
+  <!--   HEADER ROJO DE PELIGRO         -->
+  <!-- ================================ -->
+  <div class="modal-danger-header">
+    <div class="danger-icon-wrap">
+      <ion-icon name="warning-outline"></ion-icon>
+    </div>
+    <div class="danger-header-text">
+      <div class="danger-title">Eliminar cuenta</div>
+      <div class="danger-subtitle">Esta acción es irreversible. Por favor confirma tu identidad.</div>
+    </div>
+    <div class="close-btn" (click)="modalController.dismiss()">
+      <ion-icon name="close-outline"></ion-icon>
+    </div>
+  </div>
+
+  <!-- ================================ -->
+  <!--   BANNER DE ADVERTENCIA          -->
+  <!-- ================================ -->
+  <div class="warning-banner">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <div class="warning-text">
+      Al eliminar tu cuenta perderás todos tus datos, historial de pedidos y métodos de pago guardados. Esta solicitud será revisada por un administrador.
+    </div>
+  </div>
+
+  <!-- ================================ -->
+  <!--   FORMULARIO                     -->
+  <!-- ================================ -->
+  <div class="form-card">
+    <div class="form-section-label">Verifica tu identidad</div>
+
+    <form #form="ngForm" (ngSubmit)="ConfirmDelete(form.value)">
+
+      <!-- Nombre -->
+      <div class="field-group">
+        <div class="field-label">
+          <ion-icon name="person-outline"></ion-icon>
+          Nombre Completo
+        </div>
+        <ion-input
+          type="text"
+          name="name"
+          [(ngModel)]="data.name"
+          placeholder="Tu nombre completo"
+          required>
+        </ion-input>
+      </div>
+
+      <!-- Email -->
+      <div class="field-group">
+        <div class="field-label">
+          <ion-icon name="mail-outline"></ion-icon>
+          Correo electrónico
+        </div>
+        <ion-input
+          type="email"
+          name="email"
+          [(ngModel)]="data.email"
+          placeholder="correo@ejemplo.com"
+          required>
+        </ion-input>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="field-group">
+        <div class="field-label">
+          <ion-icon name="call-outline"></ion-icon>
+          Teléfono
+        </div>
+        <ion-input
+          type="tel"
+          name="phone"
+          [(ngModel)]="data.phone"
+          placeholder="Ej. 8331258596"
+          required>
+        </ion-input>
+      </div>
+
+      <!-- Motivo -->
+      <div class="field-group">
+        <div class="field-label">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+          Motivo de eliminación
+        </div>
+        <ion-textarea
+          name="motivos"
+          ngModel
+          required
+          placeholder="Cuéntanos por qué deseas eliminar tu cuenta...">
+        </ion-textarea>
+      </div>
+
+      <!-- Botones -->
+      <ion-button
+        class="btn-confirm-delete"
+        type="submit"
+        expand="block"
+        mode="ios"
+        [disabled]="!form.valid">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Confirmar eliminación
+      </ion-button>
+
+      <ion-button
+        class="btn-cancel-modal"
+        type="button"
+        fill="clear"
+        expand="block"
+        mode="ios"
+        (click)="modalController.dismiss()">
+        Cancelar, mantener mi cuenta
+      </ion-button>
+
+    </form>
+  </div>
+
+  <div class="page-bottom-pad"></div>
+
+</ion-content>

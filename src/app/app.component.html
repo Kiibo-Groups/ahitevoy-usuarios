@@ -1,0 +1,121 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay" mode="ios" swipeGesture="false">
+      
+      <!-- HEADER DEL MENU -->
+      <ion-header class="ion-no-border">
+        <ion-menu-toggle auto-hide="false">
+          <div class="banner" routerLink="/profile" routerDirection="forward">
+            <div class="info">
+              <div class="text_box" *ngIf="user">
+                <p>Hola,</p>
+                <h2>{{user.name}}</h2>
+              </div>
+              <div class="text_box" *ngIf="!user">
+                <p>Bienvenido,</p>
+                <h2>Invitado</h2>
+              </div>
+
+              <div class="img_box">
+                <img src="assets/icon_prof.png" alt="Profile">
+              </div>
+            </div>
+          </div>
+        </ion-menu-toggle>
+      </ion-header>
+
+      <!-- CONTENIDO DEL MENU -->
+      <ion-content>
+        <ion-list lines="none" *ngIf="text">
+          
+          <!-- SECCIÓN: PRINCIPAL -->
+          <ion-list-header>
+            {{ text.menu_title }}
+          </ion-list-header>
+
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+            <ion-item [routerDirection]="'forward'" [routerLink]="[p.url]" mode="md">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>{{p.title}}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <!-- SECCIÓN: ACERCA DE LA APP -->
+          <ion-list-header style="margin-top: 25px;">
+            {{ text.menu_page_title }}
+          </ion-list-header>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/about" routerDirection="forward" mode="md">
+              <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+              <ion-label>{{ text.about_title }}</ion-label>
+              <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/how" routerDirection="forward" mode="md">
+              <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+              <ion-label>{{ text.how_title }}</ion-label>
+              <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/faq" routerDirection="forward" mode="md">
+              <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
+              <ion-label>{{ text.faq_title }}</ion-label>
+              <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item routerLink="/contact" routerDirection="forward" mode="md">
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              <ion-label>{{ text.contact_title }}</ion-label>
+              <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <!-- SECCIÓN: CERRAR SESIÓN -->
+          <div class="logout-btn">
+            <ion-menu-toggle auto-hide="false">
+              <ion-item (click)="logout()" mode="md">
+                <ion-icon slot="start" name="log-out-outline"></ion-icon>
+                <ion-label>{{ text.profile_logout }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </div>
+
+        </ion-list>
+      </ion-content>
+
+      <!-- FOOTER DEL MENU (REDES SOCIALES Y VERSIÓN) -->
+      <ion-footer *ngIf="admin" class="ion-no-border">
+        
+        <div class="social-links">
+          <a href="{{ admin.fb }}" target="_blank" *ngIf="admin.fb">
+            <ion-icon name="logo-facebook" style="color: #3b5998;"></ion-icon>
+          </a>
+          <a href="{{ admin.insta }}" target="_blank" *ngIf="admin.insta">
+            <ion-icon name="logo-instagram" style="color: #e1306c;"></ion-icon>
+          </a>
+          <a href="{{ admin.youtube }}" target="_blank" *ngIf="admin.youtube">
+            <ion-icon name="logo-youtube" style="color: #ff0000;"></ion-icon>
+          </a>
+          <a href="{{ admin.twitter }}" target="_blank" *ngIf="admin.twitter">
+            <ion-icon name="logo-twitter" style="color: #1da1f2;"></ion-icon>
+          </a>
+        </div>
+
+        <div class="version-text">
+          Versión {{ admin.version_app ? admin.version_app : '2.4.0' }}
+        </div>
+
+      </ion-footer>
+    </ion-menu>
+
+    <!-- EL RESTO DE LA APLICACIÓN -->
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

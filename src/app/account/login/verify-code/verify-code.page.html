@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Valida tu número telefonico</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Verify SMS OTP -->
+<div>
+  <ion-card-header>
+  <ion-row>
+      <ion-col>
+      <h1 class="welcome_text">
+          Verifique su<br />
+          bandeja de SMS
+      </h1>
+      </ion-col>
+  </ion-row>
+  <p style="color: rgb(85, 85, 85);font-weight: 500;font-style: normal;font-size: 14px;">
+      Se ha enviado un codigo al Telefono <b>{{ phone }}</b> Verifica tu bandeja.
+  </p>
+  </ion-card-header>
+
+
+  <ion-item class="digit-group" lines="none">
+    <ion-input type="tel" #otp1 [(ngModel)]="Code" maxLength="6" required placeholder="ej.- 859754"></ion-input>
+  </ion-item>
+  
+  <p align="center" style="font-weight: 500;font-style: normal"> 
+      No obtuviste el codigo? <a (click)="resend()">Reenviar</a>
+  </p>
+
+  <ion-button class="btn_next"  (click)="valid()" color="dark" shape="round" style="--border-radius:25px;">
+      Validar
+      <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+  </ion-button>
+</div>
+<!-- Verify SMS OTP -->
+</ion-content>

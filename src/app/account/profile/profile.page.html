@@ -1,0 +1,167 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ text.profile_title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data" [fullscreen]="true">
+
+  <!-- ============================= -->
+  <!--       HERO DE PERFIL          -->
+  <!-- ============================= -->
+  <div class="profile-hero">
+    <div class="avatar-ring">
+      <ion-icon name="person"></ion-icon>
+    </div>
+    <div class="user-name">{{ data.name }}</div>
+    <div class="user-email">{{ data.email }}</div>
+  </div>
+
+  <!-- ============================= -->
+  <!--       MENÚ PRINCIPAL          -->
+  <!-- ============================= -->
+  <div class="profile-section">
+    <div class="section-label">Mi cuenta</div>
+    <div class="menu-card">
+
+      <!-- Historial de pedidos -->
+      <div class="menu-item" routerLink="/order" routerDirection="forward">
+        <div class="menu-icon-wrap orange">
+          <ion-icon name="bag-handle-outline"></ion-icon>
+        </div>
+        <div class="menu-text">
+          <div class="menu-title">{{ text.profile_order_history }}</div>
+          <div class="menu-subtitle">Pedidos y mandados anteriores</div>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="menu-chevron"></ion-icon>
+      </div>
+
+      <!-- Métodos de pago -->
+      <div class="menu-item" routerLink="/option-pay" routerDirection="forward">
+        <div class="menu-icon-wrap green">
+          <ion-icon name="wallet-outline"></ion-icon>
+        </div>
+        <div class="menu-text">
+          <div class="menu-title">Métodos de pago</div>
+          <div class="menu-subtitle">Administra tus formas de pago</div>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="menu-chevron"></ion-icon>
+      </div>
+
+      <!-- Configuración de cuenta -->
+      <div class="menu-item" (click)="takeAction(action == 1 ? 0 : 1)">
+        <div class="menu-icon-wrap dark">
+          <ion-icon name="settings-outline"></ion-icon>
+        </div>
+        <div class="menu-text">
+          <div class="menu-title">{{ text.profile_setting }}</div>
+          <div class="menu-subtitle">Actualiza tu información personal</div>
+        </div>
+        <ion-icon [name]="action == 1 ? 'chevron-up-outline' : 'chevron-forward-outline'" class="menu-chevron"></ion-icon>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================= -->
+  <!--    FORMULARIO DE EDICIÓN      -->
+  <!-- ============================= -->
+  <div class="edit-card" *ngIf="action == 1">
+    <div class="edit-title">Configuración de la cuenta</div>
+
+    <form #form="ngForm" (ngSubmit)="update(form.value)">
+
+      <div class="field-group">
+        <label>Tu nombre</label>
+        <ion-input
+          type="text"
+          name="name"
+          [(ngModel)]="data.name"
+          required
+          placeholder="Tu nombre completo">
+        </ion-input>
+      </div>
+
+      <div class="field-group">
+        <label>Email</label>
+        <ion-input
+          type="email"
+          name="email"
+          [(ngModel)]="data.email"
+          required
+          placeholder="correo@ejemplo.com">
+        </ion-input>
+      </div>
+
+      <div class="field-group">
+        <label>Teléfono</label>
+        <ion-input
+          type="tel"
+          name="phone"
+          [(ngModel)]="data.phone"
+          required
+          placeholder="10 dígitos">
+        </ion-input>
+      </div>
+
+      <div class="field-group">
+        <label>Nueva contraseña</label>
+        <ion-input
+          type="password"
+          name="password"
+          ngModel
+          placeholder="Dejar vacío para no cambiar">
+        </ion-input>
+      </div>
+
+      <ion-button
+        class="btn-save"
+        expand="block"
+        mode="ios"
+        type="submit"
+        [disabled]="!form.valid">
+        <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+        Guardar cambios
+      </ion-button>
+
+    </form>
+
+    <!-- Eliminar cuenta -->
+    <section style="text-align: center; margin-top: 10px;">
+      <ion-button
+        (click)="deleteAccount()"
+        fill="outline"
+        color="tertiary"
+        size="small"
+        mode="ios"
+        style="--border-radius: 12px; font-size: 12px;">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Eliminar cuenta
+      </ion-button>
+    </section>
+  </div>
+
+  <!-- ============================= -->
+  <!--    CERRAR SESIÓN (DANGER)     -->
+  <!-- ============================= -->
+  <div class="profile-section">
+    <div class="menu-card">
+      <div class="menu-item" (click)="logout()">
+        <div class="menu-icon-wrap red">
+          <ion-icon name="log-out-outline"></ion-icon>
+        </div>
+        <div class="menu-text">
+          <div class="menu-title" style="color: var(--ion-color-tertiary);">{{ text.profile_logout }}</div>
+          <div class="menu-subtitle">Cerrar la sesión activa</div>
+        </div>
+        <ion-icon name="chevron-forward-outline" class="menu-chevron"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-bottom-pad"></div>
+
+</ion-content>

@@ -1,0 +1,570 @@
+/* ===================================
+   ORDER PAGE - PREMIUM DESIGN
+   Usando colores del sistema (variables.scss)
+   Primary:   #FF6600 (naranja)
+   Secondary: #009933 (verde)
+   Tertiary:  #9E0000 (rojo oscuro)
+   =================================== */
+
+ion-content {
+  --background: #f5f5f5;
+}
+
+ion-header ion-toolbar {
+  --background: #ffffff;
+  --border-width: 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+
+  ion-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--ion-color-dark);
+  }
+}
+
+/* ===================================
+   SEGMENT (TABS)
+   =================================== */
+.tabs-wrapper {
+  padding: 14px 16px 8px;
+  background: #f5f5f5;
+}
+
+.custom-segment {
+  --background: #e8e8e8;
+  border-radius: 14px;
+  padding: 4px;
+  height: 46px;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.09);
+
+  ion-segment-button {
+    --border-radius: 10px;
+    --color: var(--ion-color-medium);
+    --color-checked: #ffffff;
+    --indicator-color: transparent;
+    min-height: 38px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+
+    &.segment-button-checked {
+      background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-tint));
+      box-shadow: 0 4px 14px rgba(255, 102, 0, 0.40);
+      border-radius: 10px;
+
+      ion-label {
+        color: #fff !important;
+      }
+    }
+  }
+}
+
+/* ===================================
+   EMPTY STATE
+   =================================== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+}
+
+/* ===================================
+   ORDER CARD - DELIVERY
+   =================================== */
+.order-card {
+  margin: 10px 14px;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.09) !important;
+  border: none !important;
+  overflow: hidden;
+  background: #ffffff;
+  animation: slideUp 0.35s ease forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Store Banner — degradado naranja del sistema */
+.store-banner {
+  background: linear-gradient(135deg, var(--ion-color-primary-shade) 0%, var(--ion-color-primary) 55%, var(--ion-color-primary-tint) 100%);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .store-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-right: 10px;
+
+    .store-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 3px;
+    }
+
+    .order-code {
+      font-size: 11px;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+  }
+
+  .price-badge {
+    background: rgba(255,255,255,0.22);
+    border: 1.5px solid rgba(255,255,255,0.45);
+    border-radius: 22px;
+    padding: 6px 14px;
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+  }
+}
+
+/* Status Row */
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 16px;
+  background: #fafafa;
+  border-bottom: 1px solid var(--ion-color-light);
+
+  .status-date {
+    font-size: 11px;
+    color: var(--ion-color-medium);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    ion-icon { font-size: 12px; }
+  }
+
+  /* Chips de estado usando colores del sistema */
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+
+    ion-icon { font-size: 7px; }
+
+    &.status-delivered {
+      background: rgba(0, 153, 51, 0.12);   /* secondary */
+      color: var(--ion-color-secondary-shade);
+    }
+    &.status-cancelled {
+      background: rgba(158, 0, 0, 0.10);    /* tertiary */
+      color: var(--ion-color-tertiary);
+    }
+    &.status-pending {
+      background: rgba(255, 196, 9, 0.15);  /* warning */
+      color: #a0720a;
+    }
+    &.status-on-the-way {
+      background: rgba(255, 102, 0, 0.12);  /* primary */
+      color: var(--ion-color-primary-shade);
+    }
+    &.status-accepted {
+      background: rgba(45, 211, 111, 0.13); /* success */
+      color: var(--ion-color-success-shade);
+    }
+    &.status-collecting {
+      background: rgba(255, 102, 0, 0.08);
+      color: var(--ion-color-primary);
+    }
+    &.status-default {
+      background: var(--ion-color-light);
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+/* Items Table */
+.items-section {
+  padding: 12px 16px;
+
+  .items-header {
+    display: grid;
+    grid-template-columns: 1fr 40px 65px;
+    padding: 6px 0 8px;
+    border-bottom: 2px solid var(--ion-color-light);
+    margin-bottom: 4px;
+
+    span {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ion-color-medium-shade);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      &:not(:first-child) { text-align: right; }
+    }
+  }
+
+  .item-row {
+    display: grid;
+    grid-template-columns: 1fr 40px 65px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--ion-color-light-tint);
+    align-items: start;
+
+    .item-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+    }
+
+    .item-type-badge {
+      display: inline-block;
+      background: var(--ion-color-light);
+      border-radius: 6px;
+      padding: 1px 5px;
+      font-size: 9px;
+      color: var(--ion-color-medium);
+      margin-top: 2px;
+    }
+
+    .item-qty {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ion-color-dark-tint);
+      text-align: right;
+    }
+
+    .item-price {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ion-color-primary);  /* naranja del sistema */
+      text-align: right;
+    }
+  }
+
+  .addon-row {
+    display: grid;
+    grid-template-columns: 1fr 40px 65px;
+    padding: 4px 0 4px 12px;
+    border-left: 2px solid rgba(255, 102, 0, 0.25); /* primary con opacidad */
+    margin-left: 4px;
+    margin-bottom: 4px;
+
+    span {
+      font-size: 11px;
+      color: var(--ion-color-medium);
+      &:not(:first-child) { text-align: right; }
+    }
+  }
+
+  .items-total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0 4px;
+    margin-top: 4px;
+    border-top: 2px dashed rgba(255, 102, 0, 0.20);
+
+    .total-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ion-color-dark-tint);
+    }
+
+    .total-amount {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+/* Card Actions */
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px 16px;
+
+  ion-button {
+    --border-radius: 10px;
+    --padding-start: 14px;
+    --padding-end: 14px;
+    font-size: 12px;
+    font-weight: 600;
+    height: 36px;
+
+    &.btn-rate {
+      --color: var(--ion-color-primary);
+      --border-color: var(--ion-color-primary);
+    }
+
+    &.btn-cancel {
+      --color: var(--ion-color-tertiary);
+      --border-color: var(--ion-color-tertiary);
+    }
+  }
+}
+
+/* ===================================
+   ORDER CARD - COMMANDED (MANDADO)
+   Usa secondary (verde) como acento
+   =================================== */
+.comm-card {
+  margin: 10px 14px;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.09) !important;
+  border: none !important;
+  overflow: hidden;
+  background: #ffffff;
+  animation: slideUp 0.35s ease forwards;
+}
+
+/* Comm Banner — degradado verde del sistema */
+.comm-banner {
+  background: linear-gradient(135deg, var(--ion-color-secondary-shade) 0%, var(--ion-color-secondary) 55%, var(--ion-color-secondary-tint) 100%);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .comm-info {
+    .comm-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.70);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .comm-code {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 1px;
+    }
+  }
+
+  .comm-price {
+    text-align: right;
+
+    .price-label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .price-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+  }
+}
+
+/* Comm Summary Strip */
+.comm-summary {
+  display: flex;
+  background: #fafafa;
+  border-top: 1px solid var(--ion-color-light);
+  border-bottom: 1px solid var(--ion-color-light);
+
+  .summary-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 8px;
+    border-right: 1px solid var(--ion-color-light);
+
+    &:last-child { border-right: none; }
+
+    .s-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+
+      ion-icon { font-size: 15px; color: #fff; }
+
+      /* Íconos usando colores del sistema */
+      &.c-envio   { background: linear-gradient(135deg, var(--ion-color-primary-shade), var(--ion-color-primary-tint)); }
+      &.c-propina { background: linear-gradient(135deg, var(--ion-color-secondary-shade), var(--ion-color-secondary-tint)); }
+      &.c-cobrar  { background: linear-gradient(135deg, #e07b00, var(--ion-color-warning)); }
+    }
+
+    .s-label {
+      font-size: 9px;
+      color: var(--ion-color-medium);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 2px;
+    }
+
+    .s-value {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ion-color-dark);
+    }
+  }
+}
+
+/* Timeline Route */
+.route-timeline {
+  padding: 16px 16px;
+  background: #ffffff;
+
+  .timeline-item {
+    display: flex;
+    gap: 12px;
+    position: relative;
+
+    &:not(:last-child) {
+      padding-bottom: 18px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 34px;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(
+          to bottom,
+          rgba(255, 102, 0, 0.30),   /* primary */
+          rgba(0, 153, 51, 0.25)     /* secondary */
+        );
+      }
+    }
+
+    .dot-wrapper {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+
+      &.origin-dot {
+        background: linear-gradient(135deg, var(--ion-color-primary-shade), var(--ion-color-primary-tint));
+      }
+      &.destin-dot {
+        background: linear-gradient(135deg, var(--ion-color-secondary-shade), var(--ion-color-secondary-tint));
+      }
+
+      ion-icon {
+        font-size: 15px;
+        color: #ffffff;
+      }
+    }
+
+    .timeline-content {
+      flex: 1;
+      padding-top: 4px;
+
+      .route-label {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+
+        &.origin { color: var(--ion-color-primary); }
+        &.destin  { color: var(--ion-color-secondary); }
+      }
+
+      .route-address {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+        line-height: 1.4;
+      }
+
+      .route-instr {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+        background: rgba(255, 102, 0, 0.07); /* tinte primary suave */
+        border-left: 3px solid var(--ion-color-primary-tint);
+        border-radius: 0 8px 8px 0;
+        padding: 5px 9px;
+        font-size: 11px;
+        color: var(--ion-color-primary-shade);
+        font-style: italic;
+
+        ion-icon {
+          font-size: 12px;
+          flex-shrink: 0;
+          color: var(--ion-color-primary);
+        }
+      }
+
+      .route-contact {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+        font-size: 12px;
+        color: var(--ion-color-medium);
+
+        ion-icon {
+          font-size: 13px;
+          color: var(--ion-color-medium-shade);
+        }
+      }
+    }
+  }
+}
+
+/* ===================================
+   FOOTER MENU
+   =================================== */
+.menu_foot {
+  position: fixed;
+  bottom: 15px;
+  left: 0; right: 0;
+  margin: auto;
+  width: 90%;
+  height: 60px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+
+  ion-tabs {
+    ion-tab-bar {
+      border-radius: 15px;
+    }
+  }
+}

@@ -1,0 +1,90 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="header">
+    <ion-card-header>
+      <ion-card-title>
+        Tus Favoritos
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+
+  <!-- Skeletor -->
+  <ion-list style="margin-bottom: 65px;" *ngIf="!showLoading">
+    <ion-item *ngFor="let store of fakeData">
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated style="width: 50px;height: 50px;"></ion-skeleton-text>
+      </ion-avatar>
+      <ion-label>
+        <ion-skeleton-text animated style="width: 78%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 25%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>   
+  <!-- Skeletor -->
+
+  <!-- Por Defecto -->
+    <ion-list style="margin-bottom: 65px;" *ngIf="showLoading && data.length > 0">
+      <ion-item *ngFor="let store of data">
+        <div class="heart is_animating" *ngIf="store.favorite"></div>
+        <div class="trash" (click)="trashElement(store.id_fav)"></div>
+        <ion-avatar slot="start" (click)="itemPage(store)">
+          <img src="{{store.img}}">
+        </ion-avatar>
+        <ion-label (click)="itemPage(store)">
+          <h3 style="max-width: 78%;">{{store.title}}</h3>
+          <p style="font-size: 12px;">{{store.type}}</p>
+          <p style="font-size: 11px;">Costo de envío {{store.delivery_charges_value.costs_ship | currency}} &nbsp;&nbsp;*&nbsp; {{ store.delivery_time }} min</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>   
+
+
+    <ion-list style="margin-bottom: 65px;" *ngIf="showLoading && data.length == 0">
+        <img src="assets/404.svg">
+
+        <section class="ion-text-center">
+          <span>Sin elementos que mostrar</span>
+        </section>
+    </ion-list>   
+  <!-- Por Defecto -->
+
+
+  <!-- Menu Footer -->
+  <div class="menu_foot animate__animated animate__bounceInUp" *ngIf="text">
+    <ion-tab-bar slot="bottom">
+        
+        <ion-tab-button routerLink="/home" routerDirection="back">
+          <ion-icon src="assets/icon_home.svg"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/categorys" routerDirection="forward">
+          <ion-icon src="assets/icon_search.svg"></ion-icon>
+          <ion-label *ngIf="text.home_cats">{{ text.home_cats }}</ion-label>
+          <ion-label *ngIf="!text.home_cats">Explorar</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/cart" routerDirection="forward">
+          <ion-icon src="assets/icon_cart.svg"></ion-icon>
+          <ion-label>Carrito</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/profile" routerDirection="forward">
+          <ion-icon src="assets/icon_profile.svg"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+  </div>
+  <!-- Menu Footer -->
+
+</ion-content>

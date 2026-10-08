@@ -1,0 +1,313 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+@import 'animate.css/animate.min.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+
+*, body {
+  font-family: "Figtree", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+:root {
+    --primary: #Ff6600;
+    --secondary: #009933;
+    --bg-color: #ffffff;
+    --text-light: #b3b3b3;
+    --text-dark: #616161;
+    --text-black: #000;
+    --red_color: #FF0000;
+    --white: #fff;
+    --transparent: rgba(255, 255, 255, 0);
+}
+
+
+.my-custom-class {
+
+    .modal-wrapper {
+        width: 60%;
+        height: 95%;
+        top: 5%;
+        position: absolute; 
+        display: block;  
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+}
+
+.my-custom-filters-class {
+
+    .modal-wrapper {
+        width: 50%;
+        margin: auto;
+        height: 65%;
+        top: 35%;
+        position: absolute; 
+        display: block;  
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+}
+
+.my-custom-rate-css {
+    .modal-wrapper {
+        width: 50%;
+        margin: auto;
+        height: 85%;
+        top: 15%;
+        position: absolute; 
+        display: block;  
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+}
+
+.my-custom-addcard-class {
+
+    .modal-wrapper {
+        width: 100%;
+        height: 70%;
+        top: 30%;
+        position: absolute; 
+        display: block;  
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+
+}
+
+.my-custom-info-modal-css {
+    .modal-wrapper {
+        width: 100%;
+        height: 38%;
+        top: 62%;
+        position: absolute; 
+        display: block;  
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+}
+
+.my-custom-delete-account-modal-css {
+    .modal-wrapper {
+        width: 100%;
+        height: 92%;
+        top: 8%;
+        position: absolute; 
+        display: block;  
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+    }
+}
+
+.d-flex {
+    display: flex !important;
+    align-items: center;
+    width: 100%;
+
+    .end {
+        margin-left: auto !important;
+        margin-right: 0 !important;
+        display: block;
+    }
+}
+
+.form {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    width: calc(100% - 0px);
+    z-index: 99;
+    padding: 0 20px;
+
+    ion-list {
+        background: var(--transparent) !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    ion-item {
+        padding: 0px 0px;
+        width: calc(100% - 0px);
+        min-height: unset !important;
+        box-shadow: none !important;
+        margin: 0 auto;
+        --background: var(--transparent);
+        align-items: flex-start;
+        --inner-padding-end: 0px;
+        --inner-min-height: unset !important;
+        --min-height: unset !important;
+        --padding-start: 0;
+        box-shadow: none !important;
+        margin-bottom: 30px;
+        --ripple-color: var(--transparent) !important;
+        --background-focused: var(--transparent) !important;
+
+   
+        .icon_box {
+            min-width: 35px;
+
+            img {
+                width: 20px;
+            }
+        }
+
+        ion-label {
+            color: var(--text-dark) !important;
+            font-size: 0.73rem !important;
+            font-weight: 500;
+            margin-bottom: 6px !important;
+            transform: unset !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px !important;
+        }
+
+        .item_inner {
+            &.d-flex {
+                align-items: flex-start;
+            }
+        }
+
+        .input_box {
+            width: 100%;
+            border-bottom: 1px solid rgba(204, 204, 204, 0.6) !important;
+            padding-bottom: 5px;
+        }
+
+        ion-textarea,
+        ion-input {
+            --padding: 0 !important;
+            font-size: .95rem !important;
+            font-weight: 400 !important;
+            letter-spacing: 0;
+            --padding-start: 0 !important;
+            --padding-end: 0 !important;
+            --padding-top: 0 !important;
+            --padding-bottom: 0px !important;
+            color: var(--text-black);
+            --placeholder-color: var(--text-light) !important;
+            --placeholder-opacity: 1;
+            --placeholder-font-weight: 400 !important;
+            flex: unset !important;
+
+            input {
+                --padding: var(--no-padding);
+
+                &.native-input {
+                    --padding: var(--no-padding);
+                }
+            }
+        }
+
+        &.item-select {
+            ion-select {
+                padding: 0;
+                --placeholder-color: var(--text-light);
+                --placeholder-opacity: 1;
+                font-size: .95rem !important;
+                font-weight: 400 !important;
+                color: var(--text-black);
+                letter-spacing: 0;
+                max-width: 100%;
+
+            }
+        }
+
+        &.item-datetime {
+            ion-datetime {
+                padding: 0;
+                font-size: .95rem !important;
+                font-weight: 400 !important;
+                color: var(--text-black);
+            }
+        }
+    }
+
+    ion-row {
+        margin: 0 -5px;
+    }
+}
+
+.wrap-content {
+    position: relative;
+    width: 60%;
+    margin: auto;
+}
+
+@media screen and (max-width:960px) { 
+    .wrap-content {
+        width: 75%;
+    }   
+
+    .my-custom-class {
+
+        .modal-wrapper {
+            width:75%;
+        }
+    }
+
+    .my-custom-rate-css {
+        .modal-wrapper {
+            width: 75%;
+        }
+    }
+
+    .my-custom-filters-class {
+        .modal-wrapper {
+            width: 75%;
+        }
+    }
+}
+
+@media screen and (max-width:768px) { 
+    
+    .wrap-content {
+        width: 100%;
+    }   
+
+    .my-custom-class {
+
+        .modal-wrapper {
+            width:100%;
+        }
+    }
+
+    .my-custom-rate-css {
+        .modal-wrapper {
+            width: 100%;
+        }
+    }
+
+    .my-custom-filters-class {
+        .modal-wrapper {
+            width: 100%;
+        }
+    }
+}

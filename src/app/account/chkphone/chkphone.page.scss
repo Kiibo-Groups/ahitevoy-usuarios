@@ -1,0 +1,28 @@
+.welcome_text {
+    
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: 0.8px;
+    z-index: 100;
+}
+
+.prefix {
+    display: flex;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    padding: 6px 4px;
+
+    img {
+        max-width: 20px;
+    }
+
+    ion-text {
+        padding-left: 8px;
+    }
+    
+}
+
+.input_tel {
+    margin-top: 8px;
+}

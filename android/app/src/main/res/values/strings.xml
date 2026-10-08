@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AhiTeVoy</string>
+    <string name="title_activity_main">AhiTeVoy</string>
+    <string name="package_name">com.ahi.te.voy</string>
+    <string name="custom_url_scheme">com.ahi.te.voy</string>
+</resources>

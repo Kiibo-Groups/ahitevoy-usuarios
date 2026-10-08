@@ -1,0 +1,368 @@
+<ion-header *ngIf="!chargeInProcess">
+
+  <ion-toolbar
+    style="
+      --background: #ffffff;
+      --border-width: 0;
+      --padding-start: 0;
+      --padding-end: 0;
+      --padding-top: 0;
+      --padding-bottom: 0;
+      --min-height: auto;
+      --inner-padding-end: 0;
+    ">
+
+    <div class="comm-header-content">
+
+      <!-- ================================
+           PILL SWITCHER: Comida / Servicios
+           ================================ -->
+      <div class="comm-header-segment">
+        <div class="pill-segment">
+          <div class="pill-option" routerLink="/home" routerDirection="back">
+            <img src="https://cdn-icons-png.flaticon.com/512/9425/9425697.png" alt="delivery">
+            <span>Comida</span>
+          </div>
+          <div class="pill-option pill-active">
+            <img src="https://cdn-icons-png.flaticon.com/512/7541/7541708.png" alt="servicios">
+            <span>Mandados</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================
+           BARRA DE NAVEGACIÓN / PASO
+           ================================ -->
+      <div class="comm-nav-bar">
+        <span class="step-title">
+          <ng-container [ngSwitch]="step_comm">
+            <span *ngSwitchCase="0">Nueva solicitud</span>
+            <span *ngSwitchCase="1">Punto de recolección</span>
+            <span *ngSwitchCase="2">Instrucciones</span>
+            <span *ngSwitchCase="3">Instrucciones de entrega</span>
+            <span *ngSwitchCase="4">Efectivo en mano</span>
+          </ng-container>
+        </span>
+      </div>
+
+      <!-- Searchbar del paso 1 -->
+      <div class="comm-searchbar-row" *ngIf="step_comm == 1" class="animate__animated animate__fadeInRight">
+        <ion-searchbar
+          #searchad
+          [placeholder]="text_address"
+          type="text"
+          mode="ios"
+          autocomplete="street-address"
+          animated="true"
+          (ionInput)="search($event)"
+          (ionClear)="clearSearch()"
+          [(ngModel)]="autocomplete.input">
+        </ion-searchbar>
+      </div>
+
+    </div>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content mode="ios">
+
+  <!-- ===================================
+       FLUJO NORMAL DEL MANDADO
+       =================================== -->
+  <div *ngIf="!chargeInProcess">
+
+    <!-- ======= PASO 0: Resumen ======= -->
+    <div *ngIf="step_comm == 0" class="animate__animated animate__fadeIn">
+
+      <!-- Tarjeta de título -->
+      <div class="comm-card comm-title-card">
+        <div class="comm-card-title" *ngIf="ready == false">{{ title_text }}</div>
+        <div class="comm-card-title" *ngIf="ready == true">{{ resumen_text }}</div>
+        <div class="comm-card-sub">{{ resumen_subtext }}</div>
+      </div>
+
+      <!-- Mapa + Rutas -->
+      <div class="comm-card comm-route-card">
+
+        <!-- Mapa estático cuando ya está listo -->
+        <img *ngIf="ready == true" class="comm-map-img"
+          src="https://maps.googleapis.com/maps/api/staticmap?zoom=13&size=600x250&maptype=roadmap&markers=color:0xFF0000|size:mid|label:D|{{lat_orig}},{{lng_orig}}&markers=color:0xFF0000|size:mid|label:O|{{lat_dest}},{{lng_dest}}&path=color:0x000000|weight:5|{{lat_orig}},{{lng_orig}}|{{lat_dest}},{{lng_dest}}&key={{admin.ApiKey_google}}"
+          alt="Mapa de ruta">
+
+        <!-- Punto de Recolección — Solicitud Normal -->
+        <div class="route-item" *ngIf="!order_store" (click)="next_step_btn('add_origin')">
+          <div class="route-dot origin-dot" [class.active-dot]="address_origin">
+            <ion-icon name="archive-outline"></ion-icon>
+          </div>
+          <div class="route-info">
+            <div class="route-label">Punto de recolección</div>
+            <div class="route-address" [class.placeholder-text]="!address_origin">
+              {{ address_origin ? (address_origin | slice:0:32) + '...' : 'Selecciona un punto...' }}
+            </div>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="route-chevron"></ion-icon>
+        </div>
+
+        <!-- Punto de Recolección — Solicitud a Negocio -->
+        <div class="route-item" *ngIf="order_store">
+          <div class="route-dot origin-dot" [class.active-dot]="address_origin">
+            <ion-icon name="storefront-outline"></ion-icon>
+          </div>
+          <div class="route-info">
+            <div class="route-label">Solicitud a negocio</div>
+            <div class="route-address" [class.placeholder-text]="!address_origin">
+              {{ address_origin ? (address_origin | slice:0:32) + '...' : 'Negocio asignado' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Punto de Entrega -->
+        <div class="route-item" (click)="next_step_btn('add_destin')">
+          <div class="route-dot dest-dot" [class.active-dot]="address_destin">
+            <ion-icon name="location-outline"></ion-icon>
+          </div>
+          <div class="route-info">
+            <div class="route-label">Punto de entrega</div>
+            <div class="route-address" [class.placeholder-text]="!address_destin">
+              {{ address_destin ? (address_destin | slice:0:32) + '...' : 'Selecciona destino...' }}
+            </div>
+          </div>
+          <ion-icon name="chevron-forward-outline" class="route-chevron"></ion-icon>
+        </div>
+
+      </div>
+
+      <!-- Método de pago -->
+      <div class="pay-card animate__animated animate__fadeInRight" *ngIf="ready == true"
+        routerLink="/option-pay" routerDirection="forward">
+        <div class="pay-header">
+          <span class="pay-title">Método de pago</span>
+          <span class="pay-change">Cambiar <ion-icon name="chevron-forward-outline"></ion-icon></span>
+        </div>
+        <div class="pay-method" *ngIf="otype == 1">
+          <img src="assets/cash_icon.png" alt="Efectivo">
+          <div>
+            <div class="pay-method-label">Efectivo</div>
+          </div>
+        </div>
+        <div class="pay-method" *ngIf="otype == 3">
+          <img src="assets/card_icon.png" alt="Tarjeta">
+          <div>
+            <div class="pay-method-label">Tarjeta Crédito/Débito</div>
+            <div class="pay-method-sub">Pagado vía Stripe</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Propinas -->
+      <div class="tips-card animate__animated animate__fadeInRight" *ngIf="ready == true">
+        <div class="tips-title">Agrega una propina 🎁</div>
+        <div class="tips-row">
+          <div class="tip-chip" [class.active]="filter_prop == 0" (click)="select_filters_prop(0)">$0</div>
+          <div class="tip-chip" [class.active]="filter_prop == 1" (click)="select_filters_prop(1)">$10</div>
+          <div class="tip-chip" [class.active]="filter_prop == 2" (click)="select_filters_prop(2)">$25</div>
+          <div class="tip-chip" [class.active]="filter_prop == 3" (click)="select_filters_prop(3)">$50</div>
+          <div class="tip-chip" [class.active]="filter_prop == 4" (click)="select_filters_prop(4)">$100</div>
+        </div>
+      </div>
+
+      <!-- Desglose de costos -->
+      <div class="costs-card animate__animated animate__fadeInRight" *ngIf="ready == true && cost_ship">
+        <div class="costs-title">Desglose de costos</div>
+        <div class="cost-row">
+          <span class="cost-label">Distancia</span>
+          <span class="cost-value">{{ cost_ship.distance }} KM</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-label">Tiempo estimado</span>
+          <span class="cost-value">{{ cost_ship.duration }}</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-label">Total a pagar</span>
+          <span class="cost-value">{{ total_amount | currency:'':'symbol':'1.0' }}</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- Fin Paso 0 -->
+
+    <!-- ======= PASO 1: Dirección de búsqueda ======= -->
+    <div *ngIf="step_comm == 1">
+
+      <!-- Resultados de autocomplete -->
+      <ng-container *ngIf="autocompleteItems && hasSearch">
+        <div class="search-result-item" (click)="selectAddressMap()">
+          <div class="result-icon-wrap map-icon">
+            <ion-icon name="map-outline"></ion-icon>
+          </div>
+          <div class="result-text">
+            <div class="result-main">Seleccionar en el mapa</div>
+          </div>
+        </div>
+
+        <div class="search-result-item" *ngFor="let item of autocompleteItems" (click)="SelectSearchResult(item)">
+          <div class="result-icon-wrap">
+            <ion-icon name="location-outline"></ion-icon>
+          </div>
+          <div class="result-text">
+            <div class="result-main">{{ item.structured_formatting.main_text }}</div>
+            <div class="result-sub" *ngIf="item.structured_formatting.secondary_text">
+              {{ item.structured_formatting.secondary_text | slice:0:50 }}
+              <i *ngIf="item.structured_formatting.secondary_text.length > 50">...</i>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Skeleton de ubicación actual -->
+      <div class="location-skeleton" *ngIf="!LocationNow">
+        <ion-icon name="navigate-outline"></ion-icon>
+        <div class="skeleton-text">
+          <ion-skeleton-text animated style="width: 100%; height: 15px; border-radius: 6px;"></ion-skeleton-text>
+        </div>
+      </div>
+
+      <!-- Ubicación actual disponible -->
+      <ng-container *ngIf="LocationNow && !hasSearch">
+        <div class="search-result-item" (click)="saveAddress(MyLocation[0])">
+          <div class="result-icon-wrap recent-icon">
+            <ion-icon name="navigate-outline"></ion-icon>
+          </div>
+          <div class="result-text">
+            <div class="result-main">Tu Ubicación actual</div>
+            <div class="result-sub">{{ LocationNow | slice:0:50 }}<i *ngIf="LocationNow.length > 50">...</i></div>
+          </div>
+        </div>
+
+        <div class="search-result-item" (click)="selectAddressMap()">
+          <div class="result-icon-wrap map-icon">
+            <ion-icon name="map-outline"></ion-icon>
+          </div>
+          <div class="result-text">
+            <div class="result-main">Abrir Mapa</div>
+            <div class="result-sub">Selecciona tu ubicación desde el mapa</div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Recientes -->
+      <ng-container *ngIf="!hasSearch">
+        <div class="search-result-item" *ngFor="let add of address" (click)="saveAddress(add)">
+          <div class="result-icon-wrap recent-icon">
+            <ion-icon name="time-outline"></ion-icon>
+          </div>
+          <div class="result-text">
+            <div class="result-main">{{ add.type ? chkTypeAdd(add.type) : 'Sin especificar' }}</div>
+            <div class="result-sub">{{ add.address | slice:0:50 }}<i *ngIf="add.address.length > 50">...</i></div>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+    <!-- Fin Paso 1 -->
+
+    <!-- ======= PASO 2: Instrucciones de recolección ======= -->
+    <div *ngIf="step_comm == 2" class="animate__animated animate__fadeInRight">
+      <div class="comm-card comm-title-card">
+        <div class="comm-card-title">¿Qué hacemos aquí?</div>
+        <div class="comm-card-sub">{{ address_origin }}</div>
+      </div>
+      <div class="comm-card comm-instruction-card">
+        <ion-textarea
+          rows="5"
+          [(ngModel)]="first_instr"
+          name="first_instr"
+          placeholder="Ej: Recoger paquete en la puerta...">
+        </ion-textarea>
+      </div>
+    </div>
+
+    <!-- ======= PASO 3: Instrucciones de entrega ======= -->
+    <div *ngIf="step_comm == 3" class="animate__animated animate__fadeInRight">
+      <div class="comm-card comm-title-card">
+        <div class="comm-card-title">¿Qué hacemos al llegar?</div>
+        <div class="comm-card-sub">{{ address_destin }}</div>
+      </div>
+      <div class="comm-card comm-instruction-card">
+        <ion-textarea
+          rows="5"
+          [(ngModel)]="second_instr"
+          name="second_instr"
+          placeholder="Ej: Dejar el paquete en la puerta...">
+        </ion-textarea>
+      </div>
+    </div>
+
+    <!-- ======= PASO 4: Efectivo en mano ======= -->
+    <div *ngIf="step_comm == 4" class="animate__animated animate__fadeInRight">
+      <div class="cash-card">
+        <p class="cash-label">
+          ¿Necesitas que el mensajero compre algo o retire algo por ti?
+          Indícanos cuánto debe pagar en el lugar.
+        </p>
+
+        <div class="cash-counter">
+          <button class="qty-btn" type="button" [disabled]="add_cash == 0" (click)="Qty('rest')">−</button>
+          <div class="qty-display">{{ add_cash | currency:'MXN':'symbol':'1.0' }}</div>
+          <button class="qty-btn" type="button" [disabled]="add_cash == 400000" (click)="Qty('sum')">+</button>
+        </div>
+
+        <ion-item lines="none">
+          <ion-range min="0" max="5000" step="100" pin="true" color="primary" (ionChange)="changeQty($event)">
+            <ion-label slot="start">$0</ion-label>
+            <ion-label slot="end">$5,000</ion-label>
+          </ion-range>
+        </ion-item>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================================
+       PANTALLA DE CARGA
+       =================================== -->
+  <div class="loading-screen" *ngIf="chargeInProcess">
+    <img src="assets/comm2.png" alt="Procesando">
+    <p>Estamos registrando tu solicitud...</p>
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+</ion-content>
+
+<!-- ===================================
+     FOOTER CON CTA
+     =================================== -->
+<ion-footer class="ion-no-border" *ngIf="!chargeInProcess">
+
+  <div class="footer-card" *ngIf="step_comm == 0">
+    <p *ngIf="ready == false">
+      Términos y condiciones de AhiTeVoy disponibles en
+      <a href="https://ahitevoy.com/privacy/" target="_blank">este enlace</a>.
+    </p>
+    <ion-button expand="block" (click)="makeOrder()" [disabled]="ready == false" mode="ios">
+      <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+      Confirmar pedido
+    </ion-button>
+  </div>
+
+  <div class="footer-card" *ngIf="step_comm == 2">
+    <ion-button expand="block" (click)="next_step('add_destin')" mode="ios">
+      Siguiente <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="footer-card" *ngIf="step_comm == 3">
+    <ion-button expand="block" (click)="next_step('add_cash')" mode="ios">
+      Continuar <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="footer-card" *ngIf="step_comm == 4">
+    <ion-button expand="block" (click)="next_step('ready')" mode="ios">
+      <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+      Confirmar
+    </ion-button>
+  </div>
+
+</ion-footer>

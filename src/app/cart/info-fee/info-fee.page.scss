@@ -1,0 +1,15 @@
+
+ion-card {
+    box-shadow:  none;
+
+    ion-card-content {
+
+        ion-button {
+            margin-top: 20px;
+            font-size: 14px;
+            height: 35px;
+            border-radius: 25px;
+            text-transform: capitalize;
+        }
+    }
+}

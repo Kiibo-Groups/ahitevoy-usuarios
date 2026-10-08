@@ -1,0 +1,179 @@
+<ion-header class="ion-no-border" style="z-index: 1000;">
+  <div #ToolSub class="slide-tool" *ngIf="data">
+    <ion-toolbar color="primary"> 
+      
+      <ion-buttons slot="start">
+        <ion-back-button mode="md"></ion-back-button>
+        <span class="title_header">{{ data.title }}</span>
+      </ion-buttons>
+
+      <ion-buttons slot="end" (click)="viewInfoStore()">
+        <ion-icon class="title_header" name="home" style="font-size: 16px;margin:0 12px;"></ion-icon>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+
+  <div #menuSub *ngIf="data" class="categories_items">
+    <ul id="categories-sub-menu">
+      <li *ngFor="let category of data.items; let i = index"
+          [ngClass]="{active: cat_option == i,light: cat_option != i}" 
+          class="ng-star-inserted" (click)="ScrollTo(category.id,i)">
+        <a>
+          {{category.cate_name}}
+        </a>
+      </li>
+    </ul>
+  </div>
+</ion-header>
+
+<ion-content mode="ios" color="light" [scrollEvents]="true" (ionScroll)="onScroll($event)" *ngIf="data">
+  <!-- Portada e info -->
+  <div class="pics_pp">
+    <div class="portada" [style.backgroundImage]="'url('+ data.logo +')'"></div>
+    <div class="prof_img" [style.backgroundImage]="'url('+ data.img +')'"></div>
+  </div>
+
+  <ion-card mode="ios" class="welcome-card">
+    <div class="heart element_fav_{{data.id}}" (click)="Favorites(data.id)" *ngIf="!data.favorite"></div>
+    <div class="heart is_animating" *ngIf="data.favorite"></div>
+
+    <ion-card-header>
+      <ion-card-title>
+        <h4 (click)="viewInfoStore()">
+          {{ data.title }}
+        </h4>
+
+        <p>{{data.address}}</p>
+
+        <div class="info_res">
+          <span>
+            <ion-icon name="star"></ion-icon>
+            {{ data.rating }}
+          </span>
+
+          <span>
+            <ion-icon name="bicycle"></ion-icon>
+            {{data.delivery_time}} - min
+          </span>
+
+          <span *ngIf="data.person_cost">
+            <ion-icon name="stats-chart-outline"></ion-icon>
+            {{data.person_cost}}
+          </span>
+          
+          <span *ngIf="!data.person_cost">
+            <ion-icon name="stats-chart-outline"></ion-icon>
+            Indefinido
+          </span>
+        </div>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+  <!-- Portada e info -->
+
+  <!-- Sin Elementos -->
+  <ion-card mode="ios" class="products" *ngIf="data && data.items.length == 0" style="box-shadow: none;">  
+    <ion-card-header class="ion-text-center">
+      <ion-card-title style="font-size: 20px;color:#616161;">Opps! Sin elementos que mostrar</ion-card-title>
+    </ion-card-header>
+      
+    <ion-card-content class="ion-text-center">
+      <img src="assets/empty-items.jpg" style="width: 100%;margin: 0 auto;padding-top:25px;">
+    </ion-card-content>
+  </ion-card>
+  <!-- Sin Elementos -->
+
+  <ion-card mode="ios" class="trending_items" *ngIf="data && data.items_trend.length > 0">
+    <!-- productos populares -->
+    <div>
+      <h5>
+        Especialmente para ti...
+      </h5>
+      <swiper-container [slidesPerView]="1.2" [loop]="false" [autoplay]="true" [speed]="800" [spaceBetween]="-9">
+        <swiper-slide *ngFor="let item of data.items_trend" (click)="showOption(item,data.currency)">
+          <ion-card mode="ios">
+            <ion-row>
+              <ion-col size="5" style="margin: 0 !important;padding: 0 !important;">
+                <div class="img_trend" [style.backgroundImage]="'url('+ item.img +')'" *ngIf="item.img"></div>
+                <div class="img_trend" [style.backgroundImage]="'url(assets/not_img.png)'" *ngIf="!item.img"></div>
+              </ion-col>
+              
+              <ion-col size="7" style="text-align: left;margin:0px 0 4px 0 !important;">
+
+                <div style="width: 100%;text-align: left;padding: 0 !important;margin: 0 !important;font-weight: 700;">
+                  <b style="font-size: 16px;">{{ item.name | slice:0:10 }}<i *ngIf="item.name.length > 10">...</i></b>
+                </div>
+
+                <small *ngIf="item.description">
+                  {{item.description | slice:0:30}} <i *ngIf="item.description.length > 30">...</i>
+                </small>
+                <small *ngIf="!item.description">
+                  Sin descripción en el producto.
+                </small>
+                <small style="color: gray;font-size: 10px">
+                  <b>MXN{{ item.price | currency }}</b>
+                  <small class="last_price" *ngIf="item.last_price > 0">MX &nbsp; {{item.last_price | currency}}</small>
+                </small>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </swiper-slide>
+      </swiper-container>
+    </div>
+    <!-- productos populares -->
+  </ion-card>
+
+
+  <!-- Productos -->
+  <ion-card mode="ios" class="products" *ngIf="data.items.length > 0">
+    <ion-card-content>
+      <span *ngFor="let category of data.items" class="cate_{{ category.id }}">
+        <h1 style="margin-top: 20px">
+          <b>{{ category.cate_name }}</b>
+        </h1>
+        <span *ngFor="let item of category.items">
+          <ion-row style="margin-top:10px;padding: 0px" *ngIf="item.status == 0">
+            <!-- Informacion -->
+            <ion-col size="7" style="position: relative;">
+              <b (click)="showOption(item,data.currency)">
+                <small *ngIf="hasCart(item.id)" class="badgeCart">{{hasCart(item.id)}}</small>
+                {{ item.name }}
+              </b><br>
+              
+              <small (click)="showOption(item,data.currency)" style="color: gray;font-size: 10px" *ngIf="item.description">
+                  {{ item.description | slice:0:25 }}...
+              </small><br>
+
+              <span (click)="showOption(item,data.currency)" style="color: #1d1d1d;font-size: 12px">
+                <b>MXN{{ item.price | currency }}</b>
+                
+                <small class="last_price" *ngIf="item.last_price > 0">MX{{item.last_price | currency}}</small>
+              </span>
+              
+            </ion-col>
+            <!-- Informacion -->
+
+            <!-- Imagen -->
+            <ion-col size="5" style="justify-content: center;" (click)="showOption(item,data.currency)">
+              <div class="pic_menu" *ngIf="item.img" [style.backgroundImage]="'url('+ item.img +')'"></div>
+              <div class="pic_menu" *ngIf="!item.img || item.img == ''" [style.backgroundImage]="'url(assets/not_img.png)'"></div>
+            </ion-col>
+            <!-- Imagen -->
+          </ion-row>
+        </span>
+      </span>
+    </ion-card-content>
+  </ion-card>
+  <!-- Productos -->
+
+</ion-content>
+
+<ion-footer class="ion-padding no-border" *ngIf="count > 0">
+  <ion-button mode="ios" class="animate__animated animate__bounceInUp"  routerLink="/cart" routerDirection="forward">
+    <ion-text>{{count}}</ion-text>
+
+    Ver Carrito
+
+    <span *ngIf="data_cart">MX{{ data_cart.total | currency}}</span>
+  </ion-button>
+</ion-footer>

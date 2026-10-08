@@ -1,0 +1,223 @@
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar color="white">
+  <ion-buttons slot="start">
+    <ion-icon *ngIf="loadItems == 'items'" name="arrow-back" (click)="viewAll()"></ion-icon>
+    <ion-icon *ngIf="loadItems == 'cats'" [ios]="'search-outline'" [md]="'search-sharp'"></ion-icon>
+    <ion-input type="search" #searchbar placeholder="¿Se te antoja algo?" (ionInput)="search($event)" 
+    (ionClear)="clearSearch()" 
+    [(ngModel)]="searchQuery"
+    showCancelButton="focus" clearIcon></ion-input>
+  
+  </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+ <div class="wrap-content" style="padding-bottom: 65px;">
+  <!-- Sin Categorias -->
+  <ion-card *ngIf="!hasSearch && loadBody && fk_items.length == 0" mode="ios" style="padding: 20px 20px;">
+    <h4>
+      Opps! No hay categorias para mostrar.
+    </h4>
+    <ion-button size="small" mode="ios" routerLink="/home" routerDirection="back">Ir al inicio</ion-button>
+  </ion-card>
+  <!-- Sin Categorias -->
+
+  <!-- Sin comercios -->
+  <ion-card *ngIf="!hasSearch && loadBody && SearchData.length == 0 && loadItems == 'items'" mode="ios" style="padding: 20px 20px;">
+    <h4>
+      Opps! No hay comercios en esta categoria.
+    </h4>
+    <ion-button size="small" mode="ios" (click)="clearSearch()">Mostrar Listado</ion-button>
+  </ion-card>
+  <!-- Sin Comercios -->
+
+  <!-- carga de Categorias -->
+    <ion-list *ngIf="!hasSearch && !loadBody && loadItems == 'cats'" style="margin: 10px">
+      <ion-grid>
+        <span>
+            <ion-skeleton-text animated style="margin-left: 5px; width: 50%;height: 16px;"></ion-skeleton-text>
+        </span>
+        <ion-row >
+          <ion-col size="6">
+            <div>
+                <ion-skeleton-text animated style="width: 100%;height: 80px;"></ion-skeleton-text>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div>
+                <ion-skeleton-text animated style="width: 100%;height: 80px;"></ion-skeleton-text>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div>
+                <ion-skeleton-text animated style="width: 100%;height: 80px;"></ion-skeleton-text>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div>
+                <ion-skeleton-text animated style="width: 100%;height: 80px;"></ion-skeleton-text>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+              <div>
+                  <ion-skeleton-text animated style="width: 100%;height: 80px;"></ion-skeleton-text>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div>
+                  <ion-skeleton-text animated style="width: 100%;height: 80px;"></ion-skeleton-text>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div>
+                  <ion-skeleton-text animated style="width: 100%;height: 80px;"></ion-skeleton-text>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div>
+                  <ion-skeleton-text animated style="width: 100%;height: 80px;"></ion-skeleton-text>
+              </div>
+            </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+  <!-- carga de Categorias -->
+
+  <!-- Listado de Categorias -->
+    <ion-list *ngIf="!hasSearch && loadBody && loadItems == 'cats'" style="margin: 10px;">
+      <ion-grid >
+        <span style="font-size: 14px;margin: 0 5px;">
+          Categorias principales<br />
+        </span>
+        <ion-row style="padding-top: 15px;">
+          <ion-col size="6" *ngFor="let kind of fk_items" (click)="SearchColCategory(kind.id)">
+            <div>
+              <div class="wrap-img-cats" [style.backgroundImage]="'url('+ kind.Img +')'">
+                <span>{{kind.Name}}</span>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+  <!-- Listado de Categorias -->
+
+  <!-- Carga de Negocios -->
+    <div *ngIf="!hasSearch && !loadBody && loadItems == 'items'">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" *ngFor="let fake of fakeData" size-md="6" size-lg="4" style="background: #FFFFFF;margin-top:15px;">
+            <ion-col size="12" size-lg="4" size-md="4" style="margin: 0 !important;padding: 0 !important;">
+              <ion-skeleton-text animated style="width: 100%;height: 150px;"></ion-skeleton-text>
+            </ion-col>
+            
+            <ion-col size="12" size-lg="12" size-md="4" style="text-align: left;margin:0 !important; padding:0 !important;">
+              <div style="width: 100%;text-align: left;padding: 0 !important;margin: 8px 0 4px 0 !important;">
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </div>
+              
+              <p>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+              </p>
+
+              <p>
+                <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+              </p> 
+            </ion-col>
+          </ion-col>
+        </ion-row>
+      </ion-grid> 
+    </div>
+  <!-- Carga de Negocios -->
+
+  <!-- Negocios por categoria -->
+    <div *ngIf="!hasSearch && loadBody && loadItems == 'items' && SearchData.length > 0">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-md="6" size-lg="4"  *ngFor="let store of SearchData;let i = index" style="margin-top: 15px;">
+            <div style="margin: 0 !important;padding: 0 !important;">
+              <div class="heart element_fav_{{store.id}}" (click)="Favorites(store.id)" *ngIf="!store.favorite"></div>
+              <div class="heart is_animating" *ngIf="store.favorite"></div>
+              <div class="item_norm" [style.backgroundImage]="'url('+ store.img +')'" (click)="itemPage(store)">
+                <div class="close_in"  *ngIf="!store.open">
+                  <span>NO DISPONIBLE EN ESTE MOMENTO</span>
+                </div>
+              </div>
+
+              <div class="avatar_img" (click)="itemPage(store)">
+                <img src="{{store.img}}">
+              </div>
+            </div>
+            
+            <div (click)="itemPage(store)" style="text-align: left;margin:6px 0 2px 0 !important; padding:0 !important;">
+              <span class="rating_star"><ion-icon name="star"></ion-icon> {{ store.rating }}</span>
+              
+              <p style="margin-bottom: 0px;">
+                <b style="font-size: 16px;">{{ store.title | slice:0:27 }}<i *ngIf="store.title.length > 27">...</i></b>
+              </p>
+              <small *ngIf="store.delivery_charges_value.costs_ship > 0" style="margin-top:0px;">
+                Costo de envío {{store.delivery_charges_value.costs_ship | currency}}
+              </small>
+              &nbsp;&nbsp;*&nbsp;
+              <small>
+                {{ store.delivery_time }} min
+              </small>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid> 
+    </div>
+  <!-- Negocios por categoria -->
+
+
+  <!-- Busqueda de negocios -->
+    <div *ngIf="hasSearch">
+      <ion-list>
+        <ion-list-header>
+          Resultados de tu busqueda
+        </ion-list-header>
+
+        <ion-item *ngFor="let store of data">
+          <div class="heart element_fav_{{store.id}}" (click)="Favorites(store.id)" *ngIf="!store.favorite"></div>
+          <div class="heart is_animating" *ngIf="store.favorite"></div>
+
+          <ion-avatar slot="start" (click)="itemPage(store)">
+            <img src="{{store.img}}">
+          </ion-avatar>
+          <ion-label (click)="itemPage(store)">
+            <h2>{{store.title}}</h2>
+            <h3>{{store.type}} &nbsp;*&nbsp;</h3>
+            <p>Costo de envío {{store.delivery_charges_value.costs_ship | currency}} &nbsp;&nbsp;*&nbsp; {{ store.delivery_time }} min</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+    </div>
+  <!-- Busqueda de negocios -->
+  
+  <!-- Menu Footer -->
+  <div class="menu_foot animate__animated animate__bounceInUp" *ngIf="text">
+    <ion-tab-bar slot="bottom">
+        
+        <ion-tab-button  routerLink="/home">
+          <ion-icon src="assets/icon_home.svg"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/cart" routerDirection="forward">
+          <ion-icon src="assets/icon_cart.svg"></ion-icon>
+          <ion-label>Carrito</ion-label>
+          <ion-badge *ngIf="count > 0">{{ count }}</ion-badge>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/profile" routerDirection="forward">
+          <ion-icon src="assets/icon_profile.svg"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+  </div>
+  <!-- Menu Footer -->
+  </div>
+  
+</ion-content>

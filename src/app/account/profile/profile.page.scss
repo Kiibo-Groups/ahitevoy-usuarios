@@ -1,0 +1,242 @@
+/* ===================================
+   PROFILE PAGE - PREMIUM DESIGN
+   Usando colores del sistema (variables.scss)
+   =================================== */
+
+ion-content {
+  --background: #f5f5f5;
+}
+
+ion-header ion-toolbar {
+  --background: transparent;
+  --border-width: 0;
+
+  ion-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #ffffff;
+  }
+
+  ion-back-button {
+    --color: #ffffff;
+  }
+}
+
+/* ===================================
+   HERO BANNER
+   =================================== */
+.profile-hero {
+  background: linear-gradient(180deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  padding: 22px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  .avatar-ring {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    backdrop-filter: blur(6px);
+
+    ion-icon {
+      font-size: 44px;
+      color: rgba(255,255,255,0.90);
+    }
+  }
+
+  .user-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  .user-email {
+    font-size: 13px;
+    color: rgba(255,255,255,0.70);
+    text-align: center;
+  }
+}
+
+/* ===================================
+   MENU CARDS
+   =================================== */
+.profile-section {
+  margin: 18px 14px 10px;
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--ion-color-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+}
+
+.menu-card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--ion-color-light);
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:active {
+    background: var(--ion-color-light-tint);
+  }
+
+  .menu-icon-wrap {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 14px;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 18px;
+      color: #ffffff;
+    }
+
+    &.orange  { background: linear-gradient(135deg, var(--ion-color-primary-shade), var(--ion-color-primary-tint)); }
+    &.green   { background: linear-gradient(135deg, var(--ion-color-secondary-shade), var(--ion-color-secondary-tint)); }
+    &.dark    { background: linear-gradient(135deg, #383a3e, var(--ion-color-dark-tint)); }
+    &.red     { background: linear-gradient(135deg, var(--ion-color-tertiary-shade), var(--ion-color-tertiary-tint)); }
+  }
+
+  .menu-text {
+    flex: 1;
+
+    .menu-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+    }
+
+    .menu-subtitle {
+      font-size: 11px;
+      color: var(--ion-color-medium);
+      margin-top: 2px;
+    }
+  }
+
+  .menu-chevron {
+    font-size: 16px;
+    color: var(--ion-color-medium-shade);
+  }
+}
+
+/* ===================================
+   FORM DE EDICIÓN
+   =================================== */
+.edit-card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  overflow: hidden;
+  margin: 0 14px 14px;
+  padding: 20px 18px 8px;
+  animation: slideUp 0.3s ease forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.edit-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 16px;
+}
+
+.field-group {
+  margin-bottom: 14px;
+
+  label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ion-color-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  ion-input {
+    background: var(--ion-color-light-tint);
+    border-radius: 12px;
+    padding: 10px 14px !important;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ion-color-dark);
+    border: 1.5px solid transparent;
+    --padding-start: 14px;
+    --padding-end: 14px;
+
+    &.has-focus {
+      border-color: var(--ion-color-primary);
+      background: rgba(255, 102, 0, 0.04);
+    }
+  }
+}
+
+.btn-save {
+  --background: linear-gradient(135deg, var(--ion-color-primary-shade), var(--ion-color-primary-tint));
+  --background-activated: var(--ion-color-primary-shade);
+  --border-radius: 14px;
+  --color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  height: 50px;
+  width: 100%;
+  margin: 10px 0 6px;
+  box-shadow: 0 5px 16px rgba(255, 102, 0, 0.35);
+}
+
+.btn-delete {
+  --background: transparent;
+  --color: var(--ion-color-tertiary);
+  --border-radius: 14px;
+  border: 1.5px solid var(--ion-color-tertiary);
+  font-weight: 600;
+  font-size: 13px;
+  height: 42px;
+  width: 70%;
+  margin: 14px auto 18px;
+  display: block;
+}
+
+/* ===================================
+   FOOTER PADDING
+   =================================== */
+.page-bottom-pad {
+  height: 30px;
+}

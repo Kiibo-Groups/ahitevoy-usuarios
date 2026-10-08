@@ -1,0 +1,316 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="white">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{ text.history_title }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content *ngIf="data">
+
+  <!-- TABS -->
+  <div class="tabs-wrapper">
+    <ion-segment [(ngModel)]="selectedTab" mode="md" class="custom-segment">
+      <ion-segment-button value="delivery">
+        <ion-icon name="bag-handle-outline" style="margin-right:5px; font-size:14px;"></ion-icon>
+        <ion-label>Pedidos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="commanded">
+        <ion-icon name="bicycle-outline" style="margin-right:5px; font-size:14px;"></ion-icon>
+        <ion-label>Mandados</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <!-- ============================= -->
+  <!--   VISTA: DELIVERY (PEDIDOS)   -->
+  <!-- ============================= -->
+  <div *ngIf="selectedTab === 'delivery'">
+
+    <!-- Estado vacío -->
+    <div *ngIf="deliveryOrders?.length === 0" class="empty-state">
+      <div class="empty-icon">🛍️</div>
+      <p>Aún no tienes pedidos a domicilio.<br>¡Realiza tu primer pedido!</p>
+    </div>
+
+    <!-- Tarjeta por pedido -->
+    <div class="order-card" *ngFor="let order of deliveryOrders">
+      <div class="order-card-header">
+
+        <!-- Banner de la tienda -->
+        <div class="store-banner">
+          <div class="store-info">
+            <span class="store-name">{{ order.store?.name }}</span>
+            <span class="order-code">Orden #{{ order.code_order || order.id }}</span>
+          </div>
+          <span class="price-badge">{{ order.currency }}{{ order.total }}</span>
+        </div>
+
+        <!-- Fila de estado + fecha -->
+        <div class="status-row">
+          <div class="status-date">
+            <ion-icon name="calendar-outline"></ion-icon>
+            {{ order.date }}
+          </div>
+
+          <span class="status-chip"
+            [ngClass]="{
+              'status-delivered':  order.st == 6,
+              'status-cancelled':  order.st == 2,
+              'status-pending':    order.st == 0,
+              'status-on-the-way': order.st == 4 || order.st == 5,
+              'status-accepted':   order.st == 1,
+              'status-collecting': order.st == 3,
+              'status-default':    order.st > 6
+            }">
+            <ion-icon name="ellipse" style="font-size:7px;"></ion-icon>
+            {{ order.status }}
+          </span>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="items-section">
+          <div class="items-header">
+            <span>{{ text.history_item }}</span>
+            <span>{{ text.history_qty }}</span>
+            <span>{{ text.history_price }}</span>
+          </div>
+
+          <ng-container *ngFor="let item of order.items">
+            <div class="item-row">
+              <div>
+                <div class="item-name">{{ item.item }}</div>
+                <span class="item-type-badge">{{ item.type }}</span>
+              </div>
+              <span class="item-qty">{{ item.qty }}</span>
+              <span class="item-price">{{ order.currency }}{{ item.price * item.qty }}</span>
+            </div>
+
+            <div class="addon-row" *ngFor="let addon of item.addon">
+              <span>+ {{ addon.addon }}</span>
+              <span>{{ addon.qty }}</span>
+              <span>{{ addon.price > 0 ? (order.currency + addon.price) : 'Gratis' }}</span>
+            </div>
+          </ng-container>
+
+          <div class="items-total-row">
+            <span class="total-label">Total pagado</span>
+            <span class="total-amount">{{ order.currency }}{{ order.total }}</span>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="card-actions">
+          <ion-button
+            *ngIf="order.hasRating == 0 || order.ratStore == 0"
+            class="btn-rate"
+            fill="outline"
+            size="small"
+            routerLink="/rate/{{ order.id }}/store"
+            routerDirection="forward">
+            <ion-icon name="star-outline" slot="start"></ion-icon>
+            {{ text.history_rating }}
+          </ion-button>
+          <span *ngIf="!(order.hasRating == 0 || order.ratStore == 0)"></span>
+
+          <ion-button
+            *ngIf="order.st == 0"
+            class="btn-cancel"
+            fill="outline"
+            size="small"
+            (click)="cancelOrder(order.id)">
+            <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+            {{ text.history_cancel }}
+          </ion-button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =============================== -->
+  <!--   VISTA: COMMANDED (MANDADOS)   -->
+  <!-- =============================== -->
+  <div *ngIf="selectedTab === 'commanded'">
+
+    <!-- Estado vacío -->
+    <div *ngIf="commandedOrders?.length === 0" class="empty-state">
+      <div class="empty-icon">🏍️</div>
+      <p>Aún no tienes mandados o envíos.<br>¡Envía lo que necesites!</p>
+    </div>
+
+    <!-- Tarjeta por mandado -->
+    <div class="comm-card" *ngFor="let order of commandedOrders">
+      <div class="comm-card-header">
+
+        <!-- Banner del mandado -->
+        <div class="comm-banner">
+          <div class="comm-info">
+            <div class="comm-title">Mandado Express</div>
+            <div class="comm-code">#{{ order.comm?.code_order || order.id }}</div>
+          </div>
+          <div class="comm-price">
+            <div class="price-label">Total</div>
+            <div class="price-value">{{ order.currency }}{{ order.total?.parsedValue || order.total }}</div>
+          </div>
+        </div>
+
+        <!-- Estado + fecha -->
+        <div class="status-row">
+          <div class="status-date">
+            <ion-icon name="calendar-outline"></ion-icon>
+            {{ order.date }}
+          </div>
+
+          <span class="status-chip"
+            [ngClass]="{
+              'status-delivered':  order.st == 6,
+              'status-cancelled':  order.st == 2,
+              'status-pending':    order.st == 0,
+              'status-on-the-way': order.st == 4 || order.st == 5,
+              'status-accepted':   order.st == 1,
+              'status-collecting': order.st == 3,
+              'status-default':    order.st > 6
+            }">
+            <ion-icon name="ellipse" style="font-size:7px;"></ion-icon>
+            <ng-container [ngSwitch]="order.st">
+              <span *ngSwitchCase="0">Pendiente</span>
+              <span *ngSwitchCase="1">Aceptado</span>
+              <span *ngSwitchCase="2">Cancelado</span>
+              <span *ngSwitchCase="3">Recolectando</span>
+              <span *ngSwitchCase="4">En camino</span>
+              <span *ngSwitchCase="5">En camino</span>
+              <span *ngSwitchCase="6">Entregado</span>
+              <span *ngSwitchDefault>{{ order.status || 'Sin estado' }}</span>
+            </ng-container>
+          </span>
+        </div>
+
+        <!-- Resumen rápido: costo envío, propina, efectivo -->
+        <div class="comm-summary">
+          <div class="summary-item">
+            <div class="s-icon purple">
+              <ion-icon name="bicycle-outline"></ion-icon>
+            </div>
+            <div class="s-label">Envío</div>
+            <div class="s-value">{{ order.currency }}{{ order.d_charges?.parsedValue || order.d_charges }}</div>
+          </div>
+          <div class="summary-item" *ngIf="order.comm?.propine > 0">
+            <div class="s-icon teal">
+              <ion-icon name="heart-outline"></ion-icon>
+            </div>
+            <div class="s-label">Propina</div>
+            <div class="s-value">{{ order.currency }}{{ order.comm.propine }}</div>
+          </div>
+          <div class="summary-item" *ngIf="order.comm?.add_cash > 0">
+            <div class="s-icon green">
+              <ion-icon name="cash-outline"></ion-icon>
+            </div>
+            <div class="s-label">Cobrar</div>
+            <div class="s-value">{{ order.currency }}{{ order.comm.add_cash }}</div>
+          </div>
+        </div>
+
+        <!-- Timeline: Recolección → Entrega -->
+        <div class="route-timeline">
+
+          <!-- Origen -->
+          <div class="timeline-item" *ngIf="order.comm?.address_origin">
+            <div class="dot-wrapper origin-dot">
+              <ion-icon name="navigate-circle-outline"></ion-icon>
+            </div>
+            <div class="timeline-content">
+              <div class="route-label origin">Punto de Recolección</div>
+              <div class="route-address">{{ order.comm.address_origin }}</div>
+
+              <div class="route-instr" *ngIf="order.comm.first_instr">
+                <ion-icon name="document-text-outline"></ion-icon>
+                {{ order.comm.first_instr }}
+              </div>
+
+              <div class="route-contact" *ngIf="order.comm.name_origin">
+                <ion-icon name="person-circle-outline"></ion-icon>
+                {{ order.comm.name_origin }}
+                <span *ngIf="order.comm.phone_origin"> · {{ order.comm.phone_origin }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Destino -->
+          <div class="timeline-item" *ngIf="order.comm?.address_destin">
+            <div class="dot-wrapper destin-dot">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+            <div class="timeline-content">
+              <div class="route-label destin">Punto de Entrega</div>
+              <div class="route-address">{{ order.comm.address_destin }}</div>
+
+              <div class="route-instr" *ngIf="order.comm.second_instr">
+                <ion-icon name="document-text-outline"></ion-icon>
+                {{ order.comm.second_instr }}
+              </div>
+
+              <div class="route-contact" *ngIf="order.comm.who_receives">
+                <ion-icon name="person-circle-outline"></ion-icon>
+                {{ order.comm.who_receives }}
+                <span *ngIf="order.comm.phone_receives"> · {{ order.comm.phone_receives }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Acciones -->
+        <div class="card-actions">
+          <span></span>
+          <ion-button
+            *ngIf="order.st == 0"
+            class="btn-cancel"
+            fill="outline"
+            size="small"
+            (click)="cancelOrder(order.id)">
+            <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+            {{ text.history_cancel }}
+          </ion-button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Menu Footer -->
+  <div class="menu_foot animate__animated animate__bounceInUp" *ngIf="text">
+    <ion-tab-bar slot="bottom">
+
+        <ion-tab-button routerLink="/home" routerDirection="back">
+          <ion-icon src="assets/icon_home.svg"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/categorys" routerDirection="forward">
+          <ion-icon src="assets/icon_search.svg"></ion-icon>
+          <ion-label *ngIf="text.home_cats">{{ text.home_cats }}</ion-label>
+          <ion-label *ngIf="!text.home_cats">Explorar</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/cart" routerDirection="forward">
+          <ion-icon src="assets/icon_cart.svg"></ion-icon>
+          <ion-label>Carrito</ion-label>
+          <ion-badge *ngIf="count > 0">{{ count }}</ion-badge>
+        </ion-tab-button>
+
+        <ion-tab-button routerLink="/profile" routerDirection="forward">
+          <ion-icon src="assets/icon_profile.svg"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+  </div>
+  <!-- Menu Footer -->
+
+</ion-content>

@@ -1,0 +1,202 @@
+/* ===================================
+   DELETE ACCOUNT MODAL - PREMIUM
+   =================================== */
+
+ion-content {
+  --background: #f5f5f5;
+}
+
+/* ===================================
+   MODAL HEADER ROJO (tertiary)
+   =================================== */
+.modal-danger-header {
+  background: linear-gradient(135deg, var(--ion-color-tertiary-shade) 0%, var(--ion-color-tertiary) 60%, var(--ion-color-tertiary-tint) 100%);
+  padding: 20px 20px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+
+  .danger-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 26px;
+      color: #ffffff;
+    }
+  }
+
+  .danger-header-text {
+    flex: 1;
+
+    .danger-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 3px;
+    }
+
+    .danger-subtitle {
+      font-size: 12px;
+      color: rgba(255,255,255,0.70);
+      line-height: 1.4;
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    ion-icon {
+      font-size: 16px;
+      color: rgba(255,255,255,0.85);
+    }
+  }
+}
+
+/* ===================================
+   AVISO DE ADVERTENCIA
+   =================================== */
+.warning-banner {
+  margin: 16px 14px 0;
+  background: rgba(158, 0, 0, 0.07);
+  border: 1.5px solid rgba(158, 0, 0, 0.20);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  ion-icon {
+    font-size: 20px;
+    color: var(--ion-color-tertiary);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .warning-text {
+    font-size: 12px;
+    color: var(--ion-color-tertiary-shade);
+    line-height: 1.5;
+    font-weight: 500;
+  }
+}
+
+/* ===================================
+   FORM CARD
+   =================================== */
+.form-card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  margin: 14px 14px 0;
+  padding: 20px 18px 12px;
+  overflow: hidden;
+}
+
+.form-section-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+
+/* ===================================
+   CAMPO DE FORMULARIO
+   =================================== */
+.field-group {
+  margin-bottom: 14px;
+
+  .field-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ion-color-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+
+    ion-icon {
+      font-size: 13px;
+      color: var(--ion-color-tertiary);
+    }
+  }
+
+  ion-input,
+  ion-textarea {
+    background: var(--ion-color-light-tint);
+    border-radius: 12px;
+    --padding-start: 14px;
+    --padding-end: 14px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ion-color-dark);
+    border: 1.5px solid transparent;
+    transition: border-color 0.2s ease;
+
+    &.has-focus {
+      border-color: var(--ion-color-tertiary);
+      background: rgba(158, 0, 0, 0.04);
+    }
+  }
+
+  ion-textarea {
+    min-height: 90px;
+    --padding-top: 12px;
+  }
+}
+
+/* ===================================
+   BOTÓN CONFIRMAR ELIMINACIÓN
+   =================================== */
+.btn-confirm-delete {
+  --background: linear-gradient(135deg, var(--ion-color-tertiary-shade), var(--ion-color-tertiary-tint));
+  --background-activated: var(--ion-color-tertiary-shade);
+  --border-radius: 14px;
+  --color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  height: 52px;
+  width: 100%;
+  margin: 16px 0 0;
+  box-shadow: 0 5px 18px rgba(158, 0, 0, 0.35);
+  letter-spacing: 0.3px;
+}
+
+.btn-cancel-modal {
+  --background: transparent;
+  --color: var(--ion-color-medium);
+  --border-radius: 14px;
+  font-weight: 600;
+  font-size: 13px;
+  height: 42px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.page-bottom-pad {
+  height: 30px;
+}

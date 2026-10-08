@@ -1,0 +1,39 @@
+<ion-content class="ion-padding">
+  <!--Send SMS for otp-->
+  <div *ngIf="stateVerify == 'inputPhone'">
+    <ion-row>
+      <ion-col>
+        <h1 class="welcome_text">
+          Cuál es tu número<br />
+          de teléfono?
+        </h1>
+      </ion-col>
+    </ion-row>
+    <br />
+    <ion-row>
+      <ion-col size="3" style="margin-top: 10.5px !important;">
+        <span class="prefix" (click)="changePrefix()">
+          <img src="{{pic_prefix}}">
+          <ion-text>{{text_prefix}}</ion-text>
+        </span>
+      </ion-col>
+      <ion-col size="9" class="input_tel">
+        <ion-input type="tel" inputmode="tel" [(ngModel)]="phone" clearInput required name="phone" placeholder="Ingresa tu número sin espacios"></ion-input>
+      </ion-col>
+    </ion-row>
+    <hr />
+    <p style="color: rgb(85, 85, 85);font-weight: 400;font-style: normal;font-size: 14px;">
+      Toque "Siguiente" para obtener un codigo de confirmación via SMS, con esto podremos verificar su Número Telefonico.
+    </p>
+
+    <ion-row>
+      <ion-col class="inner-recap">
+        <div id="recaptcha-container"></div>
+      </ion-col>
+    </ion-row>
+  </div>
+  <!--Send SMS for otp-->
+</ion-content>
+<ion-footer style="text-align: center;">
+  <ion-button expand="block" [disabled]="!btnDisabled" (click)="verify()" style="font-weight: 500;font-size: 16px;">{{txtbnt}}</ion-button>
+</ion-footer>

@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+        <ion-back-button mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Información</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  mode="ios" *ngIf="data">
+
+
+<div mode="ios">
+  <div style="padding: 15px 10px 0 10px;">
+    <swiper-container [slidesPerView]="1.2" [loop]="false" [spaceBetween]="10" [autoplay]="true">
+      <swiper-slide *ngFor="let pics of data.images">
+        <div (click)="Viewpic(pics.img)" [style.backgroundImage]="'url('+ pics.img +')'" style="height: 200px; width: 100%; background-size: cover; background-position: center; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
+      </swiper-slide>
+    </swiper-container>
+  </div>
+
+  <ion-card-header>
+    <ion-card-title>{{ data.title }} <ion-badge color="primary" style="float: right">{{ data.rating }}<br></ion-badge></ion-card-title>
+    <ion-card-subtitle>{{ data.type }}</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-icon name="pin-outline" slot="start" color="primary"></ion-icon>
+        <ion-label class="ion-text-wrap" style="font-weight: 500;">{{ data.address }}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="call-outline" slot="start" color="primary"></ion-icon>
+        <ion-label class="ion-text-wrap">
+          <a style="text-decoration: none; font-weight: 500; color: var(--ion-color-dark);" href="https://api.whatsapp.com/send?phone=+52{{ data.phone }}">{{ data.phone }}</a>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="cash-outline" slot="start" color="primary"></ion-icon>
+        <ion-label style="font-weight: 500;">Costo por persona : {{ data.currency }}{{ data.person_cost }}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="time-outline" slot="start" color="primary"></ion-icon>
+        <ion-label style="font-weight: 500;">Giro : {{ data.type }}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="cube-outline" slot="start" color="primary"></ion-icon>
+        <ion-label style="font-weight: 500;">{{ text.info_d_time }} : {{ data.delivery_time }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+
+</div>
+
+<span *ngIf="data.ratings.length > 0">
+  <h3 style="padding: 0px 18px">{{ text.info_rating_title }}</h3>
+
+  <ion-card mode="ios" *ngFor="let rate of data.ratings" style="box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-radius: 12px; margin-bottom: 15px;">
+    <ion-card-header style="padding-bottom: 5px;">
+      <ion-card-subtitle style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-weight: 700; color: var(--ion-color-dark);">{{ rate.user }}</span>
+        <small style="color: var(--ion-color-medium);">{{ rate.date }}</small>
+      </ion-card-subtitle>
+      <div style="display: flex; margin-top: 5px; color: #ffc409; font-size: 16px;">
+        <ion-icon name="star" *ngIf="rate.star >= 1"></ion-icon>
+        <ion-icon name="star" *ngIf="rate.star >= 2"></ion-icon>
+        <ion-icon name="star" *ngIf="rate.star >= 3"></ion-icon>
+        <ion-icon name="star" *ngIf="rate.star >= 4"></ion-icon>
+        <ion-icon name="star" *ngIf="rate.star >= 5"></ion-icon>
+      </div>
+    </ion-card-header>
+
+    <ion-card-content style="font-size: 14px; color: #555;">
+      {{ rate.comment }}
+    </ion-card-content>
+  </ion-card>
+
+</span>
+
+<div class="viewPic" *ngIf="ViewPic == true">
+  <ion-label (click)="closevp()">
+      close
+  </ion-label>
+  <img src="{{Pic}}">
+</div>
+
+</ion-content>

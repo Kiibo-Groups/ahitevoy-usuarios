@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Filtros</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="close-outline" class="close-btn" (click)="closeFilters()"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="ios">
+
+  <!-- ===================================
+       AJUSTES DE BÚSQUEDA
+       =================================== -->
+  <div class="filter-section">
+    <div class="section-title">
+      <ion-icon name="options-outline"></ion-icon>
+      Ajustes de búsqueda
+    </div>
+
+    <!-- Disponibilidad -->
+    <div class="switch-row">
+      <div class="switch-info">
+        <div class="switch-label">Disponibilidad</div>
+        <div class="switch-sub">Mostrar solo negocios abiertos</div>
+      </div>
+      <ion-toggle [(ngModel)]="store_status" mode="ios" color="primary"></ion-toggle>
+    </div>
+
+    <!-- Distancia Toggle -->
+    <div class="switch-row">
+      <div class="switch-info">
+        <div class="switch-label">Límite de distancia</div>
+        <div class="switch-sub">Filtrar por rango kilométrico</div>
+      </div>
+      <ion-toggle [(ngModel)]="distance_status" mode="ios" color="primary"></ion-toggle>
+    </div>
+
+    <!-- Slider de distancia -->
+    <div class="range-container" *ngIf="distance_status">
+      <ion-range min="1" max="6" step="1" [(ngModel)]="distance_max" name="distance_max" color="primary"></ion-range>
+      <div class="range-labels">
+        <span [class.active]="distance_max == 1">1km</span>
+        <span [class.active]="distance_max == 2">2km</span>
+        <span [class.active]="distance_max == 3">3km</span>
+        <span [class.active]="distance_max == 4">4km</span>
+        <span [class.active]="distance_max == 5">5km</span>
+        <span [class.active]="distance_max == 6">+6km</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================================
+       FILTRAR POR
+       =================================== -->
+  <div class="filter-section">
+    <div class="section-title">
+      <ion-icon name="funnel-outline"></ion-icon>
+      Filtrar por
+    </div>
+
+    <div class="chips-container">
+      <div class="filter-chip" [class.active]="filter == 0" (click)="select_filters(0)">Más Recientes</div>
+      <div class="filter-chip" [class.active]="filter == 1" (click)="select_filters(1)">Cercanos</div>
+      <div class="filter-chip" [class.active]="filter == 2" (click)="select_filters(2)">Entrega Rápida</div>
+      <div class="filter-chip" [class.active]="filter == 3" (click)="select_filters(3)">Envío más bajo</div>
+      <div class="filter-chip" [class.active]="filter == 4" (click)="select_filters(4)">Con Ofertas</div>
+      <div class="filter-chip" [class.active]="filter == 5" (click)="select_filters(5)">En Tendencia</div>
+      <div class="filter-chip" [class.active]="filter == 6" (click)="select_filters(6)">Mejor Calificación</div>
+    </div>
+
+  </div>
+
+</ion-content>
+
+<!-- BOTÓN APLICAR -->
+<ion-footer class="ion-no-border">
+  <ion-button expand="block" mode="ios" (click)="applyFilters()">
+    <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+    Aplicar Filtros
+  </ion-button>
+</ion-footer>

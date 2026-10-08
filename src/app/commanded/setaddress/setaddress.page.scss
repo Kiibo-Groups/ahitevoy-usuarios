@@ -1,0 +1,211 @@
+#map_canvas {
+    width: 90%;
+    height: 60%;
+    border: 1px solid #501BB3;
+  }
+   
+   
+  #address {
+    padding: 0px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+   
+  
+   
+  .map-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+   
+    #map_center {
+      position: absolute;
+      z-index: 99;
+      height: 40px;
+      width: 40px;
+      top: 50%;
+      left: 50%;
+      margin-left: -21px;
+      margin-top: -41px;
+    }
+  
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  
+  ion-footer {
+     
+     
+      .footer_content {
+          padding-bottom: calc(20px + env(safe-area-inset-bottom));
+      }
+      .form {
+          padding: 0;
+          padding-top: 30px;
+          transition: all .5s;
+          background: #fff;
+  
+          ion-list {
+              padding: 0px 20px 23px 20px;
+  
+              .address_title {
+                  h3 {
+                      color: #000 !important;
+                      font-size: 0.73rem !important;
+                      font-weight: 500;
+                      margin-bottom: 10px !important;
+                      text-transform: uppercase;
+                      letter-spacing: 0.5px !important;
+                  }
+  
+                  ion-row {
+                      ion-col {
+                          ion-item {
+                              padding: 7px 8px !important;
+                              border-radius: 50px;
+                              transition: all 0.5s;
+                              background:#fff;
+                              margin: 0;
+  
+                              ion-label {
+                                  width: 100% !important;
+                                  position: relative;
+                                  max-width: 100% !important;
+                                  white-space: normal;
+                                  margin: 0 !important;
+  
+                                  .img_container {
+                                      width: 100%;
+                                      display: flex;
+                                      align-items: center;
+  
+                                      .img_box {
+                                          position: relative;
+                                          width: 23px;
+                                          height: 23px;
+                                          overflow: hidden;
+                                          margin-right: 7px;
+  
+                                          img {
+                                              position: absolute;
+                                              top: 0;
+                                              left: 0;
+                                              right: 0;
+                                              bottom: 0;
+                                              margin: auto;
+                                              width: 0;
+                                              height: 0;
+                                              display: block;
+  
+                                              &:nth-child(odd) {
+                                                  width: 100%;
+                                                  height: auto;
+                                              }
+                                          }
+                                      }
+  
+                                      h2 {
+                                          margin: 0;
+                                          font-weight: 500;
+                                          font-size: 0.9rem;
+                                          color: #000;
+                                          text-transform: none;
+                                          position: relative;
+                                          top: 0px;
+                                      }
+                                  }
+                              }
+  
+                              ion-radio {
+                                  position: absolute;
+                                  z-index: 999;
+                                  width: 100%;
+                                  height: 100%;
+                                  margin: 0;
+                                  --color: transparent !important;
+                                  --color-checked: transparent !important;
+                              }
+  
+                              &::before {
+                                  content: '';
+                                  position: absolute;
+                                  top: 0;
+                                  left: 0;
+                                  bottom: 0;
+                                  right: 0;
+                                  width: 0;
+                                  height: 0;
+                                  margin: auto;
+                                  background: #501BB3;
+                                  transition: all .3s;
+                                  border-radius: 50px;
+                              }
+  
+                              &.item-radio-checked {
+                                  border-color: transparent !important;
+  
+                                  &::before {
+                                      width: 100%;
+                                      height: 100%;
+                                  }
+  
+                                  ion-label {
+                                      .img_container {
+                                          .img_box {
+                                              img {
+                                                  &:nth-child(even) {
+                                                      width: 100%;
+                                                      height: auto;
+                                                  }
+  
+                                                  &:nth-child(odd) {
+                                                      width: 0;
+                                                      height: 0;
+                                                  }
+                                              }
+                                          }
+  
+                                          h2 {
+                                              color: #fff;
+                                          }
+                                      }
+  
+  
+                                  }
+  
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  
+      .button.btn {
+          &.btnA {
+              display: none;
+          }
+      }
+  
+      &.active {
+          .form {
+              display: block;
+          }
+  
+          .footer_content {
+             height: 314px;
+          }
+  
+          .button.btn {
+              &.btnA {
+                  display: block;
+              }
+  
+              &.btnB {
+                  display: none;
+              }
+          }
+      }
+  }

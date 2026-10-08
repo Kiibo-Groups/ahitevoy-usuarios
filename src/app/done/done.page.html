@@ -1,0 +1,167 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="backPage()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Listado de pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="ios">
+
+  <!-- LOADING -->
+  <div class="charge_load" *ngIf="!data">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <!-- PEDIDOS ACTIVOS -->
+  <div class="wrap-content" *ngIf="data && data.length > 0">
+
+    <div class="order-track-card" *ngFor="let order of data; trackBy: trackByOrderId">
+
+      <!-- Banner principal -->
+      <div class="order-banner">
+        <div class="order-store">
+          <div class="order-store-name">{{ order.store.name }}</div>
+          <div class="order-code">Orden #{{ order.order.id }}</div>
+        </div>
+        <div class="order-date">
+          <ion-icon name="calendar-outline"></ion-icon>
+          {{ order.order.created_at | date:'d/M/yy HH:mm' }}
+        </div>
+      </div>
+
+      <!-- Barra de progreso por pasos -->
+      <div class="status-tracker">
+        <div class="tracker-label">Progreso del pedido</div>
+        <div class="tracker-steps">
+
+          <!-- Paso 1: Aceptado -->
+          <div class="step"
+            [class.done]="order.order.status >= 1"
+            [class.active]="order.order.status == 0">
+            <div class="step-dot">
+              <ion-icon [name]="order.order.status >= 1 ? 'checkmark-outline' : 'storefront-outline'"></ion-icon>
+            </div>
+            <div class="step-label">Aceptado</div>
+          </div>
+
+          <!-- Paso 2: Preparando -->
+          <div class="step"
+            [class.done]="order.order.status >= 3"
+            [class.active]="order.order.status == 1 || order.order.status == 1.5">
+            <div class="step-dot">
+              <ion-icon [name]="order.order.status >= 3 ? 'checkmark-outline' : 'restaurant-outline'"></ion-icon>
+            </div>
+            <div class="step-label">Preparando</div>
+          </div>
+
+          <!-- Paso 3: En camino -->
+          <div class="step"
+            [class.done]="order.order.status >= 4"
+            [class.active]="order.order.status == 3">
+            <div class="step-dot">
+              <ion-icon [name]="order.order.status >= 4 ? 'checkmark-outline' : 'bicycle-outline'"></ion-icon>
+            </div>
+            <div class="step-label">En camino</div>
+          </div>
+
+          <!-- Paso 4: Entregado -->
+          <div class="step"
+            [class.done]="order.order.status >= 5"
+            [class.active]="order.order.status == 4">
+            <div class="step-dot">
+              <ion-icon [name]="order.order.status >= 5 ? 'checkmark-outline' : 'home-outline'"></ion-icon>
+            </div>
+            <div class="step-label">Entregado</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Chip de estado actual -->
+      <div class="status-chip-row">
+        <span class="status-chip searching"  *ngIf="order.order.status == 0">
+          <ion-icon name="search-outline"></ion-icon> Buscando repartidor...
+        </span>
+        <span class="status-chip accepted"   *ngIf="order.order.status == 1">
+          <ion-icon name="checkmark-circle-outline"></ion-icon> Pedido aceptado
+        </span>
+        <span class="status-chip searching"  *ngIf="order.order.status == 1.5">
+          <ion-icon name="search-outline"></ion-icon> Buscando repartidor...
+        </span>
+        <span class="status-chip on-route"   *ngIf="order.order.status == 3">
+          <ion-icon name="bicycle-outline"></ion-icon> Repartidor en ruta
+        </span>
+        <span class="status-chip delivering" *ngIf="order.order.status == 4">
+          <ion-icon name="navigate-outline"></ion-icon> Repartidor en camino
+        </span>
+      </div>
+
+      <!-- Costos del pedido -->
+      <div class="costs-section">
+        <div class="cost-row" *ngIf="order.order.t_charges">
+          <span class="cost-label">Comisión por servicio</span>
+          <span class="cost-value">{{ order.order.t_charges | currency }}</span>
+        </div>
+        <div class="cost-row" *ngIf="order.order.d_charges">
+          <span class="cost-label">Cargo de envío</span>
+          <span class="cost-value">{{ order.order.d_charges | currency }}</span>
+        </div>
+        <div class="cost-row total-cost">
+          <span class="cost-label">Total</span>
+          <span class="cost-value">{{ order.order.total | currency }}</span>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="actions-row">
+
+        <!-- Cancelar (solo si está buscando) -->
+        <ion-button
+          *ngIf="order.order.status == 0"
+          fill="outline"
+          class="action-btn btn-cancel"
+          (click)="cancelOrder(order.order.id)">
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+          Cancelar
+        </ion-button>
+
+        <!-- Contactar negocio (aceptado) -->
+        <ion-button
+          *ngIf="order.order.status == 1"
+          class="action-btn btn-store"
+          [href]="'tel:+52' + order.store.phone">
+          <ion-icon name="call-outline" slot="start"></ion-icon>
+          Llamar al negocio
+        </ion-button>
+
+        <!-- Seguimiento en mapa -->
+        <ion-button
+          *ngIf="order.order.status == 3 || order.order.status == 4"
+          class="action-btn btn-track"
+          (click)="viewTrip(order)">
+          <ion-icon name="navigate-outline" slot="start"></ion-icon>
+          Ver en mapa
+        </ion-button>
+
+        <!-- Contactar repartidor (WhatsApp + llamada) -->
+        <div class="contact-icons" *ngIf="order.order.status == 3 || order.order.status == 4">
+          <a class="wa-btn"
+             [href]="'https://api.whatsapp.com/send?phone=+52' + order.dboy.phone"
+             target="_blank">
+            <ion-icon name="logo-whatsapp"></ion-icon>
+          </a>
+          <a class="call-btn"
+             [href]="'tel:+52' + order.dboy.phone"
+             target="_blank">
+            <ion-icon name="call-outline"></ion-icon>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

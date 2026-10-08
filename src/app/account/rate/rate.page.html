@@ -1,0 +1,126 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="type == 'store'">Califica al Comercio</ion-title>
+    <ion-title *ngIf="type == 'staff'">Califica al Repartidor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="ios">
+  
+  <form #form="ngForm" (ngSubmit)="giveRating(form.value)">
+
+    <div class="rating-card">
+
+      <!-- Ícono y título -->
+      <div class="card-icon-wrap" [class.staff-icon]="type == 'staff'">
+        <ion-icon [name]="type == 'store' ? 'storefront-outline' : 'bicycle-outline'"></ion-icon>
+      </div>
+      
+      <div class="rating-title" *ngIf="type == 'store'">Califica tu pedido</div>
+      <div class="rating-title" *ngIf="type == 'staff'">Califica tu entrega</div>
+      
+      <!-- ===================================
+           CALIFICACIÓN PRINCIPAL (COMERCIO)
+           =================================== -->
+      <div class="rating-block">
+        <div class="rating-subtitle" *ngIf="type == 'store'">{{ text.rating_heading || '¿Cómo fue tu experiencia con este negocio?' }}</div>
+        <div class="rating-subtitle" *ngIf="type == 'staff'">{{ text.rating_heading || 'Califica al repartidor' }}</div>
+
+        <div class="stars-container">
+          <div class="star-box" [class.active]="star >= 1" (click)="setStar(1)">
+            <ion-icon [name]="star >= 1 ? 'star' : 'star-outline'"></ion-icon>
+          </div>
+          <div class="star-box" [class.active]="star >= 2" (click)="setStar(2)">
+            <ion-icon [name]="star >= 2 ? 'star' : 'star-outline'"></ion-icon>
+          </div>
+          <div class="star-box" [class.active]="star >= 3" (click)="setStar(3)">
+            <ion-icon [name]="star >= 3 ? 'star' : 'star-outline'"></ion-icon>
+          </div>
+          <div class="star-box" [class.active]="star >= 4" (click)="setStar(4)">
+            <ion-icon [name]="star >= 4 ? 'star' : 'star-outline'"></ion-icon>
+          </div>
+          <div class="star-box" [class.active]="star >= 5" (click)="setStar(5)">
+            <ion-icon [name]="star >= 5 ? 'star' : 'star-outline'"></ion-icon>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================
+           CALIFICACIONES EXTRA (REPARTIDOR)
+           =================================== -->
+      <ng-container *ngIf="type == 'staff'">
+        
+        <div class="rating-block">
+          <div class="block-label">Atención, limpieza y tiempo del negocio</div>
+          <div class="stars-container">
+            <div class="star-box" [class.active]="star_staff1 >= 1" (click)="setStarS1(1)">
+              <ion-icon [name]="star_staff1 >= 1 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+            <div class="star-box" [class.active]="star_staff1 >= 2" (click)="setStarS1(2)">
+              <ion-icon [name]="star_staff1 >= 2 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+            <div class="star-box" [class.active]="star_staff1 >= 3" (click)="setStarS1(3)">
+              <ion-icon [name]="star_staff1 >= 3 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+            <div class="star-box" [class.active]="star_staff1 >= 4" (click)="setStarS1(4)">
+              <ion-icon [name]="star_staff1 >= 4 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+            <div class="star-box" [class.active]="star_staff1 >= 5" (click)="setStarS1(5)">
+              <ion-icon [name]="star_staff1 >= 5 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <div class="rating-block">
+          <div class="block-label">Presentación y limpieza de la entrega</div>
+          <div class="stars-container">
+            <div class="star-box" [class.active]="staf_staff2 >= 1" (click)="setStarS2(1)">
+              <ion-icon [name]="staf_staff2 >= 1 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+            <div class="star-box" [class.active]="staf_staff2 >= 2" (click)="setStarS2(2)">
+              <ion-icon [name]="staf_staff2 >= 2 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+            <div class="star-box" [class.active]="staf_staff2 >= 3" (click)="setStarS2(3)">
+              <ion-icon [name]="staf_staff2 >= 3 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+            <div class="star-box" [class.active]="staf_staff2 >= 4" (click)="setStarS2(4)">
+              <ion-icon [name]="staf_staff2 >= 4 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+            <div class="star-box" [class.active]="staf_staff2 >= 5" (click)="setStarS2(5)">
+              <ion-icon [name]="staf_staff2 >= 5 ? 'star' : 'star-outline'"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+
+      <!-- Cuadro de comentario -->
+      <div class="comment-box">
+        <ion-textarea 
+          ngModel 
+          name="comment" 
+          [placeholder]="text.rating_msg || 'Déjanos un comentario (opcional)...'">
+        </ion-textarea>
+      </div>
+
+      <!-- Botón de envío -->
+      <ion-button 
+        class="btn-submit-rating" 
+        expand="block" 
+        [disabled]="form.invalid || star === 0" 
+        type="submit" 
+        mode="ios">
+        <ion-icon name="send-outline" slot="start"></ion-icon>
+        {{ text.rating_button || 'Enviar calificación' }}
+      </ion-button>
+
+    </div>
+
+    <div class="page-bottom-pad"></div>
+
+  </form>
+
+</ion-content>

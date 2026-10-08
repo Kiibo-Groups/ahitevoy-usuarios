@@ -1,0 +1,133 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card class="header">
+    <ion-card-header>
+      <ion-card-title>
+        Tus métodos de pago
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <!-- Por Defecto -->
+  <ion-list class="defaults_items">
+    <ion-list-header>
+      <span>Método predeterminado</span>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <img src="assets/cash_icon.png" alt="Cash">
+      </ion-thumbnail>
+
+      <ion-label>
+        <h3>Pago en efectivo</h3>
+      </ion-label>
+
+      <ion-radio mode="ios" slot="end" value="1" (ionSelect)="setType(1)" [checked]="otype == 1"></ion-radio>
+    </ion-item>
+
+    <ion-item *ngIf="send_terminal">
+      <ion-thumbnail slot="start">
+        <img src="assets/card_icon.png" alt="Card">
+      </ion-thumbnail>
+
+      <ion-label>
+        <h3>Tarjeta Crédito/Débito</h3>
+      </ion-label>
+
+      <ion-radio mode="ios" slot="end" value="3" (ionSelect)="setType(3)" [checked]="otype == 3"></ion-radio>
+    </ion-item>
+
+    <!-- <ion-item>
+      <ion-thumbnail slot="start">
+        <img src="assets/wall_icon.png" alt="Cash">
+      </ion-thumbnail>
+
+      <ion-label>
+        <h3>Mi Billetera</h3>
+      </ion-label>
+
+      <ion-radio mode="ios" slot="end" value="1" (ionSelect)="setType(2)" [checked]="otype == 2"></ion-radio>
+    </ion-item> -->
+
+    <ion-item *ngIf="viewCardPred">
+      <ion-thumbnail slot="start">
+        <img src="assets/card_icon.png" alt="Card">
+      </ion-thumbnail>
+      <ion-label>
+        <h3><span style="text-transform: capitalize;">{{cardPredClient.brand}}</span> • {{ cardPredClient.card_number | slice:-4 }}</h3>
+        <p>
+          Vence el {{ cardPredClient.expiration_month }}/{{ cardPredClient.expiration_year }}
+          <span style="color:green;"> • Principal</span>
+        </p>
+      </ion-label>
+
+      <ion-radio mode="ios" slot="end" value="3" (ionSelect)="setType(3)" [checked]="otype == 3"></ion-radio>
+    </ion-item>
+  </ion-list>
+  <!-- Por Defecto -->
+
+  <!-- Tarjetas agregadas -->
+  <ion-list *ngIf="cards.length > 0">
+    <ion-list-header>
+      <span>Tarjetas Registradas</span>  
+    </ion-list-header>
+
+    <ion-item *ngFor="let c of cards" (click)="markPred(c.id,c.brand,c.card_number)">
+      <ion-thumbnail slot="start">
+        <img src="assets/card_icon.png" alt="Card">
+      </ion-thumbnail>
+      <ion-label>
+        <h3><span style="text-transform: capitalize;">{{c.brand}}</span> • {{ c.card_number | slice:-4 }}</h3>
+        <p>
+          Vence el {{ c.expiration_month }}/{{ c.expiration_year }}
+          <span style="color:green;" *ngIf="cardPredClient && cardPredClient.id == c.id"> • Principal</span>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <!-- Tarjetas agregadas -->
+
+    <!-- Menu Footer -->
+    <div class="menu_foot animate__animated animate__bounceInUp" *ngIf="text">
+      <ion-tab-bar slot="bottom">
+          
+          <ion-tab-button routerLink="/home" routerDirection="back">
+            <ion-icon src="assets/icon_home.svg"></ion-icon>
+            <ion-label>{{ text.home_footer_name }}</ion-label>
+          </ion-tab-button>
+  
+          <ion-tab-button routerLink="/categorys" routerDirection="forward">
+            <ion-icon src="assets/icon_search.svg"></ion-icon>
+            <ion-label *ngIf="text.home_cats">{{ text.home_cats }}</ion-label>
+            <ion-label *ngIf="!text.home_cats">Explorar</ion-label>
+          </ion-tab-button>
+  
+          <ion-tab-button routerLink="/cart" routerDirection="forward">
+            <ion-icon src="assets/icon_cart.svg"></ion-icon>
+            <ion-label>{{ text.home_cart }}</ion-label>
+            <ion-badge *ngIf="count > 0">{{ count }}</ion-badge>
+          </ion-tab-button>
+  
+          <ion-tab-button routerLink="/profile" routerDirection="forward">
+            <ion-icon src="assets/icon_profile.svg"></ion-icon>
+            <ion-label>{{ text.home_profile }}</ion-label>
+          </ion-tab-button>
+        </ion-tab-bar>
+    </div>
+    <!-- Menu Footer -->
+
+    <!-- Agregado de tarjetas  
+    <ion-button mode="ios"  *ngIf="maxCards" (click)='addNewCard()' class="cart_btn animate__animated animate__bounceInUp" >
+      Agregar una nueva tarjeta
+    </ion-button>
+    Agregado de tarjetas -->
+</ion-content>
